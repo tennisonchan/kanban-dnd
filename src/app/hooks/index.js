@@ -1,3 +1,4 @@
 import useColumns from "./useColumns";
+import useNotes from "./useNotes";
 
-export { useColumns };
+export { useColumns, useNotes };

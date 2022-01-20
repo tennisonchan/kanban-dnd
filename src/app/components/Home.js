@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Header from "app/components/Header";
 import EmptyColumn from "app/components/EmptyColumn";
 import ColumnBoard from "app/components/ColumnBoard";
-import { useColumns } from "app/hooks";
+import { useColumns, useNotes } from "app/hooks";
 import { makeStyles } from "@mui/styles";
 import AddColumnModal from "app/components/AddColumnModal";
 
@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Home(props) {
   const [{ columns = {}, columnOrder = [] }] = useColumns();
+  const [{ notes = {} }] = useNotes();
   const classes = useStyles();
   console.log(columns, columnOrder);
   const isNoColumns = !columnOrder.length;
@@ -53,7 +54,13 @@ function Home(props) {
       {!isNoColumns && (
         <div className={classes.columnsBoards}>
           {columnOrder.map((columnId) => {
-            return <ColumnBoard key={columnId} column={columns[columnId]} />;
+            return (
+              <ColumnBoard
+                key={columnId}
+                column={columns[columnId]}
+                notes={notes}
+              />
+            );
           })}
           <div className={classes.newColumnButtonContainer}>
             <Button onClick={handleOpen} className={classes.newColumnButton}>

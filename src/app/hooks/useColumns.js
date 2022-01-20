@@ -38,7 +38,7 @@ function useColumns() {
 
   useEffect(() => {
     async function fetchColumns() {
-      const resp = await axios.get("./dummyData.json");
+      const resp = await axios.get("./dummy/columns.json");
       console.log(resp.data);
       loadColumns(resp.data);
     }

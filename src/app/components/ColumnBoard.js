@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
 import NoteForm from "app/components/NoteForm";
 import ColumnBoardHeader from "app/components/ColumnBoardHeader";
 import ColumnCard from "app/components/ColumnCard";
+import { useNotes } from "app/hooks";
+import EditColumnMenu from "app/components/EditColumnMenu";
 
 const useStyles = makeStyles((theme) => ({
   columnBoard: {
@@ -26,30 +28,52 @@ const useStyles = makeStyles((theme) => ({
 
 const ColumnBoard = (props) => {
   const { column } = props;
-  const { name, notes = {}, noteOrder = [] } = column;
+  const [{ notes = {}, noteOrders = {} }, { addNote }] = useNotes();
+  const { id: columnId, name } = column;
+  const noteOrder = noteOrders?.[columnId] || [];
   const classes = useStyles();
   const [isAddingNote, setIsAddingNote] = useState(false);
   const noteCount = noteOrder.length;
+  const [isOpenEditMenu, setIsOpenEditMenu] = useState(false);
+  const anchor = useRef(null);
 
   const handleCreate = () => {
     setIsAddingNote(true);
   };
 
-  const handleEdit = () => {};
+  const handleOpenEditMenu = () => {
+    setIsOpenEditMenu(true);
+  };
 
   const handleCancelEditNote = () => {
     setIsAddingNote(false);
   };
 
-  const handleCreateNote = (note) => {};
+  const handleCreateNote = (content) => {
+    const newNote = { content, createdAt: Date.now() };
+    addNote(newNote, columnId);
+  };
+  const handleCloseEditMenu = () => {
+    setIsOpenEditMenu(false);
+  };
+  const handleDeleteColumn = () => {};
+  const handleEditColumn = () => {};
 
   return (
     <Box className={classes.columnBoard}>
       <ColumnBoardHeader
+        ref={anchor}
         columnName={name}
         noteCount={noteCount}
         onCreate={handleCreate}
-        onEdit={handleEdit}
+        onEdit={handleOpenEditMenu}
+      />
+      <EditColumnMenu
+        anchorEl={anchor.current}
+        isOpen={isOpenEditMenu}
+        onDelete={handleDeleteColumn}
+        onClose={handleCloseEditMenu}
+        onEdit={handleEditColumn}
       />
       {isAddingNote && (
         <NoteForm onCreate={handleCreateNote} onCancel={handleCancelEditNote} />

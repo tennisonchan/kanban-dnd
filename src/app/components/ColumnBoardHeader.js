@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import IconButton from "@mui/material/IconButton";
 import { makeStyles } from "@mui/styles";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     height: "20px",
     color: theme.palette.primary.contrastText,
     textAlign: "center",
-    backgroundColor: theme.palette.secondary.contrastText,
+    backgroundColor: theme.palette.secondary.main,
     borderRadius: "2em",
   },
   columnHeader: {
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ColumnBoardHeader = (props) => {
+const ColumnBoardHeader = (props, ref) => {
   const { columnName, noteCount, onCreate, onEdit } = props;
   const classes = useStyles();
 
@@ -45,7 +45,7 @@ const ColumnBoardHeader = (props) => {
     <div className={classes.columnHeader}>
       <span className={classes.counter}>{noteCount}</span>
       <h3 className={classes.columnName}>{columnName}</h3>
-      <div>
+      <div ref={ref}>
         <IconButton onClick={onCreate}>
           <AddIcon className={classes.addNoteIcon} />
         </IconButton>
@@ -57,4 +57,4 @@ const ColumnBoardHeader = (props) => {
   );
 };
 
-export default ColumnBoardHeader;
+export default forwardRef(ColumnBoardHeader);
