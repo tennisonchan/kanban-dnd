@@ -1,0 +1,29 @@
+{
+  "columns": {
+    "1": {
+      "name": "column 1",
+      "notes": {
+        "3": {
+          "content": "note 3"
+        },
+        "4": {
+          "content": "note 4"
+        }
+      },
+      "noteOrder": ["3", "4"]
+    },
+    "2": {
+      "name": "column 2",
+      "notes": {
+        "5": {
+          "content": "note 5"
+        },
+        "6": {
+          "content": "note 6"
+        }
+      },
+      "noteOrder": ["5", "6"]
+    }
+  },
+  "columnOrder": ["1", "2"]
+}
