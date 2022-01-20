@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EmptyColumn = (props) => {
+  const { onSubmit } = props;
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -24,7 +25,8 @@ const EmptyColumn = (props) => {
     setIsOpen(false);
   };
 
-  const handleCreateColumn = (columnName) => {
+  const handleCreateColumn = (name) => {
+    onSubmit(name);
     handleClose();
   };
 

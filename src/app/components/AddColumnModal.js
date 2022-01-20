@@ -18,6 +18,10 @@ const AddColumnModal = (props) => {
     setColumnName("");
   };
 
+  const handleSubmit = () => {
+    onSubmit(columnName);
+  };
+
   return (
     <Dialog
       fullWidth
@@ -44,7 +48,7 @@ const AddColumnModal = (props) => {
           autoFocus
           variant="contained"
           disabled={noInputValue}
-          onClick={onSubmit}
+          onClick={handleSubmit}
         >
           Create Column
         </Button>

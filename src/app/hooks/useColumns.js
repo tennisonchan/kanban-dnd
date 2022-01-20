@@ -1,5 +1,6 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
+import { v4 as uuid } from "uuid";
 
 const initialState = { columns: {}, columnOrder: [] };
 
@@ -13,12 +14,13 @@ function reducer(state, action) {
         columns,
         columnOrder,
       };
-    case "addColumns":
-      const newColumnIds = Object.keys(payload);
+    case "addColumn":
+      const newColumnId = uuid();
+      const newColumn = { ...payload.column, id: newColumnId };
       return {
         ...state,
-        columns: { ...state.columns, ...payload },
-        columnOrder: [...state.columnOrder, ...newColumnIds],
+        columns: { ...state.columns, [newColumnId]: newColumn },
+        columnOrder: [...state.columnOrder, newColumnId],
       };
     default:
       return state;
@@ -28,8 +30,8 @@ function reducer(state, action) {
 function useColumns() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  function addColumns(payload) {
-    dispatch({ type: "addColumns", payload });
+  function addColumn(column) {
+    dispatch({ type: "addColumn", payload: { column } });
   }
 
   function loadColumns(payload) {
@@ -45,8 +47,7 @@ function useColumns() {
     fetchColumns();
   }, []);
 
-  console.log({ state });
-  return [state, { addColumns }];
+  return [state, { addColumn }];
 }
 
 export default useColumns;

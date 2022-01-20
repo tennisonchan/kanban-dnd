@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Home(props) {
-  const [{ columns = {}, columnOrder = [] }] = useColumns();
+  const [{ columns = {}, columnOrder = [] }, { addColumn }] = useColumns();
   const [{ notes = {} }] = useNotes();
   const classes = useStyles();
   console.log(columns, columnOrder);
@@ -44,13 +44,15 @@ function Home(props) {
     setIsOpen(false);
   };
 
-  const handleCreateColumn = (columnName) => {
+  const handleCreateColumn = (name) => {
+    addColumn({ name });
     handleClose();
   };
+
   return (
     <>
       <Header />
-      {isNoColumns && <EmptyColumn />}
+      {isNoColumns && <EmptyColumn onSubmit={handleCreateColumn} />}
       {!isNoColumns && (
         <div className={classes.columnsBoards}>
           {columnOrder.map((columnId) => {
