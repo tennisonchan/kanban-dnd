@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Header from "app/components/Header";
 import EmptyColumn from "app/components/EmptyColumn";
 import ColumnBoard from "app/components/ColumnBoard";
-import { useFetchColumns } from "app/hooks";
+import { useColumns } from "app/hooks";
 import { makeStyles } from "@mui/styles";
 import AddColumnModal from "app/components/AddColumnModal";
 
@@ -30,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Home(props) {
-  const [{ columns = {}, columnOrder = [] }] = useFetchColumns();
+  const [{ columns = {}, columnOrder = [] }] = useColumns();
   const classes = useStyles();
   console.log(columns, columnOrder);
   const isNoColumns = !columnOrder.length;

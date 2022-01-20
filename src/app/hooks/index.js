@@ -1,3 +1,3 @@
-import useFetchColumns from "./useFetchColumns";
+import useColumns from "./useColumns";
 
-export { useFetchColumns };
+export { useColumns };

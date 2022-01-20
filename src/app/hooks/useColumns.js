@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import axios from "axios";
 
 const initialState = { columns: {}, columnOrder: [] };
@@ -25,7 +25,7 @@ function reducer(state, action) {
   }
 }
 
-function useFetchColumns() {
+function useColumns() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   function addColumns(payload) {
@@ -49,4 +49,4 @@ function useFetchColumns() {
   return [state, { addColumns }];
 }
 
-export default useFetchColumns;
+export default useColumns;
