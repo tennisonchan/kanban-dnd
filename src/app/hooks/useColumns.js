@@ -22,6 +22,13 @@ function reducer(state, action) {
         columns: { ...state.columns, [newColumnId]: newColumn },
         columnOrder: [...state.columnOrder, newColumnId],
       };
+    case "editColumn":
+      const editColumn = payload.column;
+      const editColumnId = payload.column.id;
+      return {
+        ...state,
+        columns: { ...state.columns, [editColumnId]: editColumn },
+      };
     default:
       return state;
   }
@@ -32,6 +39,10 @@ function useColumns() {
 
   function addColumn(column) {
     dispatch({ type: "addColumn", payload: { column } });
+  }
+
+  function editColumn(column) {
+    dispatch({ type: "editColumn", payload: { column } });
   }
 
   function loadColumns(payload) {
@@ -47,7 +58,7 @@ function useColumns() {
     fetchColumns();
   }, []);
 
-  return [state, { addColumn }];
+  return [state, { addColumn, editColumn }];
 }
 
 export default useColumns;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
-import AddColumnModal from "app/components/AddColumnModal";
+import ColumnModal from "app/components/ColumnModal";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,8 +25,8 @@ const EmptyColumn = (props) => {
     setIsOpen(false);
   };
 
-  const handleCreateColumn = (name) => {
-    onSubmit(name);
+  const handleCreateColumn = (column) => {
+    onSubmit(column);
     handleClose();
   };
 
@@ -37,10 +37,12 @@ const EmptyColumn = (props) => {
         <Button variant="contained" onClick={handleOpen}>
           Add a column
         </Button>
-        <AddColumnModal
+        <ColumnModal
           isOpen={isOpen}
           onClose={handleClose}
           onSubmit={handleCreateColumn}
+          buttonText="Create column"
+          title="Add a column"
         />
       </div>
     </div>

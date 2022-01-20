@@ -5,7 +5,7 @@ import EmptyColumn from "app/components/EmptyColumn";
 import ColumnBoard from "app/components/ColumnBoard";
 import { useColumns, useNotes } from "app/hooks";
 import { makeStyles } from "@mui/styles";
-import AddColumnModal from "app/components/AddColumnModal";
+import ColumnModal from "app/components/ColumnModal";
 
 const useStyles = makeStyles((theme) => ({
   columnsBoards: {
@@ -44,8 +44,8 @@ function Home(props) {
     setIsOpen(false);
   };
 
-  const handleCreateColumn = (name) => {
-    addColumn({ name });
+  const handleCreateColumn = (column) => {
+    addColumn(column);
     handleClose();
   };
 
@@ -68,10 +68,12 @@ function Home(props) {
             <Button onClick={handleOpen} className={classes.newColumnButton}>
               <span className={classes.newColumnButtonText}>+ Add column</span>
             </Button>
-            <AddColumnModal
+            <ColumnModal
+              title="Add a column"
               isOpen={isOpen}
               onClose={handleClose}
               onSubmit={handleCreateColumn}
+              buttonText="Create column"
             />
           </div>
         </div>

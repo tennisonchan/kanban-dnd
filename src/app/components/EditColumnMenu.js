@@ -8,7 +8,17 @@ import ListItemText from "@mui/material/ListItemText";
 
 const EditColumnMenu = (props) => {
   const { anchorEl, isOpen, onEdit, onDelete, onClose } = props;
-  console.log({ anchorEl });
+
+  const handleEdit = () => {
+    onEdit();
+    onClose();
+  };
+
+  const handleDelete = () => {
+    onDelete();
+    onClose();
+  };
+
   return (
     <Paper sx={{ width: 320, maxWidth: "100%" }}>
       <Menu
@@ -18,11 +28,11 @@ const EditColumnMenu = (props) => {
         onClose={onClose}
       >
         <MenuList>
-          <MenuItem onClick={onEdit}>
+          <MenuItem onClick={handleEdit}>
             <ListItemText>Edit column</ListItemText>
           </MenuItem>
           <Divider />
-          <MenuItem onClick={onDelete}>
+          <MenuItem onClick={handleDelete}>
             <ListItemText>Delete column</ListItemText>
           </MenuItem>
         </MenuList>

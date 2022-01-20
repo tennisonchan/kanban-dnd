@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -6,9 +6,16 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 
-const AddColumnModal = (props) => {
-  const { isOpen, onClose, onSubmit } = props;
-  const [columnName, setColumnName] = useState("");
+const ColumnModal = (props) => {
+  const {
+    title = "Add a column",
+    column = {},
+    buttonText = "Create column",
+    isOpen,
+    onClose,
+    onSubmit,
+  } = props;
+  const [columnName, setColumnName] = useState(column?.name || "");
   const noInputValue = !columnName;
   const handleChange = (event) => {
     setColumnName(event.target.value);
@@ -19,8 +26,12 @@ const AddColumnModal = (props) => {
   };
 
   const handleSubmit = () => {
-    onSubmit(columnName);
+    onSubmit({ ...column, name: columnName });
   };
+
+  useEffect(() => {
+    setColumnName(column?.name);
+  }, [column?.name]);
 
   return (
     <Dialog
@@ -30,7 +41,7 @@ const AddColumnModal = (props) => {
       open={isOpen}
     >
       <DialogTitle sx={{ m: 0, p: 2 }} id="modal-title" onClose={handleClose}>
-        Add a column
+        {title}
       </DialogTitle>
       <DialogContent dividers>
         <TextField
@@ -50,11 +61,11 @@ const AddColumnModal = (props) => {
           disabled={noInputValue}
           onClick={handleSubmit}
         >
-          Create Column
+          {buttonText}
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-export default AddColumnModal;
+export default ColumnModal;
