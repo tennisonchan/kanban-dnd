@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 import AddColumnModal from "app/components/AddColumnModal";
 import { makeStyles } from "@mui/styles";
 import NotesIcon from "@mui/icons-material/Notes";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import AddIcon from "@mui/icons-material/Add";
 
 const useStyles = makeStyles((theme) => ({
   columnBoard: {
@@ -23,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
     margin: 0,
+    flexGrow: 1,
   },
   counter: {
     display: "inline-block",
@@ -30,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 6px",
     fontSize: "12px",
     fontWeight: "700",
-    lineHeight: "18px",
+    height: "20px",
     color: theme.palette.primary.contrastText,
     textAlign: "center",
     backgroundColor: theme.palette.secondary.contrastText,
@@ -38,6 +42,22 @@ const useStyles = makeStyles((theme) => ({
   },
   columnHeader: {
     padding: theme.spacing(1),
+    display: "flex",
+    alignItems: "center",
+  },
+  addNoteIcon: {
+    color: theme.palette.primary.contrastText,
+  },
+  editColumnIcon: {
+    color: theme.palette.primary.contrastText,
+  },
+  noteForm: {
+    marginTop: theme.spacing(1),
+    padding: theme.spacing(1),
+    color: `${theme.palette.primary.contrastText} !important`,
+  },
+  cardTextInput: {
+    color: `${theme.palette.primary.contrastText} !important`,
   },
   columnCards: {
     paddingLeft: theme.spacing(1),
@@ -66,29 +86,70 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     marginRight: theme.spacing(3),
   },
-  editNoteIconWrap: {
+  editCardIconWrap: {
     alignItems: "center",
     display: "flex",
   },
-  editNoteIcon: {
+  editCardIcon: {
     color: theme.palette.primary.contrastText,
   },
 }));
 
 const ColumnBoardHeader = (props) => {
-  const { columnName, noteCount } = props;
+  const { columnName, noteCount, onCreate, onEdit } = props;
   const classes = useStyles();
 
   return (
     <div className={classes.columnHeader}>
       <span className={classes.counter}>{noteCount}</span>
       <h3 className={classes.columnName}>{columnName}</h3>
+      <div className={classes.headerIcons}>
+        <IconButton onClick={onCreate}>
+          <AddIcon className={classes.addNoteIcon} />
+        </IconButton>
+        <IconButton>
+          <MoreHorizIcon className={classes.editColumnIcon} />
+        </IconButton>
+      </div>
     </div>
   );
 };
 
 const NoteForm = (props) => {
-  return <div>note form</div>;
+  const classes = useStyles();
+  return (
+    <div className={classes.noteForm}>
+      <TextField
+        label="Add new note"
+        placeholder="Enter a note"
+        multiline
+        fullWidth
+        color="secondary"
+        variant="outlined"
+        sx={{ flex: 1, color: "primary.contrastText" }}
+        InputProps={{
+          className: classes.cardTextInput,
+        }}
+        InputLabelProps={{ className: classes.cardTextInput }}
+      />
+      <Box sx={{ gap: 1, paddingTop: 1, display: "flex" }}>
+        <Button
+          sx={{ flex: 1, color: "primary.contrastText" }}
+          variant="contained"
+          color="secondary"
+        >
+          Add
+        </Button>
+        <Button
+          sx={{ flex: 1, color: "primary.contrastText" }}
+          color="secondary"
+          variant="outlined"
+        >
+          Cancel
+        </Button>
+      </Box>
+    </div>
+  );
 };
 
 const ColumnCard = (props) => {
@@ -102,9 +163,9 @@ const ColumnCard = (props) => {
         <div>{note.content}</div>
         <small>Added by tennisonchan</small>
       </div>
-      <div className={classes.editNoteIconWrap}>
+      <div className={classes.editCardIconWrap}>
         <IconButton>
-          <MoreHorizIcon className={classes.editNoteIcon} />
+          <MoreHorizIcon className={classes.editCardIcon} />
         </IconButton>
       </div>
     </div>
@@ -119,9 +180,20 @@ const ColumnBoard = (props) => {
   const [isAddingNote, setIsAddingNote] = useState(false);
   const noteCount = noteOrder.length;
 
+  const handleCreate = () => {
+    setIsAddingNote(true);
+  };
+
+  const handleEdit = () => {};
+
   return (
     <Box className={classes.columnBoard}>
-      <ColumnBoardHeader columnName={name} noteCount={noteCount} />
+      <ColumnBoardHeader
+        columnName={name}
+        noteCount={noteCount}
+        onCreate={handleCreate}
+        onEdit={handleEdit}
+      />
       {isAddingNote && <NoteForm />}
       <div className={classes.columnCards}>
         {noteOrder.map((noteId) => (
