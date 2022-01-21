@@ -8,6 +8,7 @@ import EditColumnMenu from "app/components/EditColumnMenu";
 import ColumnModal from "app/components/ColumnModal";
 import NoteModal from "app/components/NoteModal";
 import { useSelector } from "react-redux";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles((theme) => ({
   columnBoard: {
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ColumnBoard = (props) => {
   const classes = useStyles();
-  const { columnId } = props;
+  const { columnId, index } = props;
   const [, { removeColumn, editColumn, getColumnById }] = useColumns();
   const [{ notes }, { addNote, getNoteOrderByColumnId }] = useNotes();
   const column = useSelector((state) => getColumnById(state, columnId));
@@ -81,51 +82,68 @@ const ColumnBoard = (props) => {
   console.log({ noteOrder });
 
   return (
-    <Box className={classes.columnBoard}>
-      <ColumnBoardHeader
-        ref={anchor}
-        columnName={column.name}
-        noteCount={noteCount}
-        onCreate={handleClickCreateNote}
-        onEdit={handleOpenEditMenu}
-      />
-      <EditColumnMenu
-        anchorEl={anchor.current}
-        isOpen={isOpenEditMenu}
-        onDelete={handleDeleteColumn}
-        onClose={handleCloseEditMenu}
-        onEdit={handleOpenColumnModel}
-      />
-      <ColumnModal
-        isOpen={isOpenColumnModal}
-        onClose={handleCloseColumnModal}
-        onSubmit={handleEditColumn}
-        column={column}
-        buttonText="Update column"
-        title="Edit column"
-      />
-      <NoteModal
-        isOpen={isOpenNoteModal}
-        onClose={handleCloseNoteModal}
-        onSubmit={handleCreateNote}
-        buttonText="Add"
-        title="Add new note"
-      />
-      {!!noteCount && (
-        <div className={classes.columnCards}>
-          {noteOrder.map((noteId) => {
-            console.log({ noteId });
-            return (
-              <ColumnCard
-                key={noteId}
-                note={notes[noteId]}
-                columnId={columnId}
-              />
-            );
-          })}
+    <Draggable key={columnId} draggableId={columnId} index={index}>
+      {(draggableProvided) => (
+        <div
+          ref={draggableProvided.innerRef}
+          {...draggableProvided.draggableProps}
+          {...draggableProvided.dragHandleProps}
+          className={classes.columnBoard}
+        >
+          <ColumnBoardHeader
+            ref={anchor}
+            columnId={columnId}
+            columnName={column.name}
+            noteCount={noteCount}
+            onCreate={handleClickCreateNote}
+            onEdit={handleOpenEditMenu}
+          />
+          <EditColumnMenu
+            anchorEl={anchor.current}
+            isOpen={isOpenEditMenu}
+            onDelete={handleDeleteColumn}
+            onClose={handleCloseEditMenu}
+            onEdit={handleOpenColumnModel}
+          />
+          <ColumnModal
+            isOpen={isOpenColumnModal}
+            onClose={handleCloseColumnModal}
+            onSubmit={handleEditColumn}
+            column={column}
+            buttonText="Update column"
+            title="Edit column"
+          />
+          <NoteModal
+            isOpen={isOpenNoteModal}
+            onClose={handleCloseNoteModal}
+            onSubmit={handleCreateNote}
+            buttonText="Add"
+            title="Add new note"
+          />
+          {!!noteCount && (
+            <Droppable droppableId="notes" type="NOTE" direction="vertical">
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className={classes.columnCards}
+                >
+                  {noteOrder.map((noteId, index) => (
+                    <ColumnCard
+                      key={noteId}
+                      index={index}
+                      note={notes[noteId]}
+                      columnId={columnId}
+                    />
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          )}
         </div>
       )}
-    </Box>
+    </Draggable>
   );
 };
 

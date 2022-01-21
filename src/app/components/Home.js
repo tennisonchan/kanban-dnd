@@ -7,11 +7,14 @@ import { useColumns, useNotes } from "app/hooks";
 import { makeStyles } from "@mui/styles";
 import ColumnModal from "app/components/ColumnModal";
 import axios from "axios";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles((theme) => ({
   columnsBoards: {
     display: "flex",
-    height: "100%",
+  },
+  columnsContainer: {
+    display: "flex",
     padding: theme.spacing(2),
   },
   newColumnButtonContainer: {},
@@ -28,6 +31,16 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "6px",
   },
 }));
+
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
+
+// export default reorder;
 
 function Home(props) {
   const [{ columnOrder = [] }, { addColumn, loadColumns }] = useColumns();
@@ -66,29 +79,80 @@ function Home(props) {
     fetchNote();
   }, []);
 
+  const onDragEnd = (result) => {
+    const { type, destination, source } = result;
+    const noDestination = !destination;
+    const noChanges =
+      destination?.index === source.index &&
+      destination?.droppableId == source.droppableId;
+
+    if (noDestination || noChanges) {
+      return;
+    }
+    console.log(result);
+
+    if (type === "COLUMN") {
+      const newColumnOrder = reorder(
+        columnOrder,
+        source.index,
+        destination.index
+      );
+
+      console.log({ newColumnOrder, columnOrder });
+
+      return;
+    }
+  };
+
   return (
     <>
       <Header />
-      {isNoColumns && <EmptyColumn onSubmit={handleCreateColumn} />}
-      {!isNoColumns && (
-        <div className={classes.columnsBoards}>
-          {columnOrder.map((columnId) => {
-            return <ColumnBoard key={columnId} columnId={columnId} />;
-          })}
-          <div className={classes.newColumnButtonContainer}>
-            <Button onClick={handleOpen} className={classes.newColumnButton}>
-              <span className={classes.newColumnButtonText}>+ Add column</span>
-            </Button>
-            <ColumnModal
-              title="Add a column"
-              isOpen={isOpen}
-              onClose={handleClose}
-              onSubmit={handleCreateColumn}
-              buttonText="Create column"
-            />
-          </div>
-        </div>
-      )}
+      <div className={classes.columnsContainer}>
+        {isNoColumns && <EmptyColumn onSubmit={handleCreateColumn} />}
+        {!isNoColumns && (
+          <>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable
+                droppableId="columns"
+                type="COLUMN"
+                direction="horizontal"
+              >
+                {(provided) => (
+                  <div
+                    ref={provided.innerRef}
+                    className={classes.columnsBoards}
+                  >
+                    {columnOrder.map((columnId, index) => {
+                      return (
+                        <ColumnBoard
+                          key={columnId}
+                          columnId={columnId}
+                          index={index}
+                        />
+                      );
+                    })}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+            <div>
+              <Button onClick={handleOpen} className={classes.newColumnButton}>
+                <span className={classes.newColumnButtonText}>
+                  + Add column
+                </span>
+              </Button>
+              <ColumnModal
+                title="Add a column"
+                isOpen={isOpen}
+                onClose={handleClose}
+                onSubmit={handleCreateColumn}
+                buttonText="Create column"
+              />
+            </div>
+          </>
+        )}
+      </div>
     </>
   );
 }

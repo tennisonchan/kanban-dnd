@@ -6,6 +6,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import NoteModal from "app/components/NoteModal";
 import { useNotes } from "app/hooks";
 import NoteMenu from "app/components/NoteMenu";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles((theme) => ({
   columnCard: {
@@ -44,9 +45,8 @@ const ColumnCard = (props) => {
   const classes = useStyles();
   const [isOpenNoteModal, setIsOpenNoteModal] = useState(false);
   const [, { editNote, removeNote }] = useNotes();
-  const { note, columnId } = props;
+  const { note, columnId, index } = props;
   const anchor = useRef(null);
-  console.log({ note });
   const [isOpenNoteMenu, setIsOpenNoteMenu] = useState(false);
 
   const handleOpenNoteModal = () => {
@@ -74,18 +74,27 @@ const ColumnCard = (props) => {
 
   return (
     <>
-      <div className={classes.columnCard}>
-        <NotesIcon className={classes.cardIcon} />
-        <div className={classes.cardContent}>
-          <small>{note.name}</small>
-          <div>{note.content}</div>
-        </div>
-        <div ref={anchor} className={classes.editCardIconWrap}>
-          <IconButton onClick={handleOpenNoteMenu}>
-            <MoreHorizIcon sx={{ color: "primary.contrastText" }} />
-          </IconButton>
-        </div>
-      </div>
+      <Draggable key={note.id} draggableId={note.id} index={index}>
+        {(provided) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            className={classes.columnCard}
+          >
+            <NotesIcon className={classes.cardIcon} />
+            <div className={classes.cardContent}>
+              <small>{note.name}</small>
+              <div>{note.content}</div>
+            </div>
+            <div ref={anchor} className={classes.editCardIconWrap}>
+              <IconButton onClick={handleOpenNoteMenu}>
+                <MoreHorizIcon sx={{ color: "primary.contrastText" }} />
+              </IconButton>
+            </div>
+          </div>
+        )}
+      </Draggable>
       <NoteMenu
         anchorEl={anchor.current}
         isOpen={isOpenNoteMenu}

@@ -3,7 +3,6 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   header: {
-    height: theme.spacing(4),
     paddingTop: theme.spacing(2),
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),

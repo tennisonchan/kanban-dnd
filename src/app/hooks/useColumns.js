@@ -30,6 +30,7 @@ function useColumns() {
         dispatch(removeColumn({ id }));
       },
       getColumnById,
+      getColumnOrder,
     },
   ];
 }

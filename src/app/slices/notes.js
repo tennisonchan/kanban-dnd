@@ -34,7 +34,6 @@ export const noteSlice = createSlice({
     },
     removeNote(state, action) {
       const { id: removeId, columnId } = action.payload;
-      const { notes } = state;
       const noteOrder = state.noteOrders[columnId].filter(
         (id) => id !== removeId
       );
