@@ -31,9 +31,8 @@ const useStyles = makeStyles((theme) => ({
 const ColumnBoard = (props) => {
   const classes = useStyles();
   const { columnId } = props;
-  const [, { editColumn, getColumnById }] = useColumns();
-  const [{ notes }, { removeColumn, addNote, getNoteOrderByColumnId }] =
-    useNotes();
+  const [, { removeColumn, editColumn, getColumnById }] = useColumns();
+  const [{ notes }, { addNote, getNoteOrderByColumnId }] = useNotes();
   const column = useSelector((state) => getColumnById(state, columnId));
   const noteOrder = useSelector((state) =>
     getNoteOrderByColumnId(state, columnId)
@@ -64,7 +63,10 @@ const ColumnBoard = (props) => {
   const handleCloseEditMenu = () => {
     setIsOpenEditMenu(false);
   };
-  const handleDeleteColumn = () => {};
+  const handleDeleteColumn = () => {
+    removeColumn(columnId);
+    handleCloseEditMenu();
+  };
   const handleOpenColumnModel = () => {
     setIsOpenColumnModal(true);
   };

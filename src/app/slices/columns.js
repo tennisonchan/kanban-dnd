@@ -33,6 +33,20 @@ export const columnSlice = createSlice({
         },
       };
     },
+    removeColumn(state, action) {
+      const { id: removeId } = action.payload;
+      const { columns } = state;
+      const columnOrder = state.columnOrder.filter((id) => id !== removeId);
+
+      return {
+        ...state,
+        columnOrder,
+        columns: columnOrder.reduce(
+          (acc, id) => ({ ...acc, [id]: columns[id] }),
+          {}
+        ),
+      };
+    },
     loadColumns(state, action) {
       const { columns, columnOrder } = action.payload;
       return {

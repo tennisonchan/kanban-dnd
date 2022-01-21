@@ -6,7 +6,8 @@ import {
   getColumnById,
 } from "app/slices/columns";
 
-const { addColumn, editColumn, loadColumns } = columnSlice.actions;
+const { addColumn, editColumn, loadColumns, removeColumn } =
+  columnSlice.actions;
 
 function useColumns() {
   const dispatch = useDispatch();
@@ -24,6 +25,9 @@ function useColumns() {
       },
       loadColumns: function (payload) {
         dispatch(loadColumns(payload));
+      },
+      removeColumn: function (id) {
+        dispatch(removeColumn({ id }));
       },
       getColumnById,
     },
