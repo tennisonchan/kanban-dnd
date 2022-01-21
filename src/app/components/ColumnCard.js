@@ -26,10 +26,14 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     flexGrow: 1,
     marginRight: theme.spacing(3),
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
   },
   editCardIconWrap: {
     alignItems: "center",
     display: "flex",
+    minWidth: "40px",
   },
 }));
 
@@ -40,8 +44,8 @@ const ColumnCard = (props) => {
     <div className={classes.columnCard}>
       <NotesIcon className={classes.cardIcon} />
       <div className={classes.cardContent}>
+        <small>{note.name}</small>
         <div>{note.content}</div>
-        <small>Added by tennisonchan</small>
       </div>
       <div className={classes.editCardIconWrap}>
         <IconButton>

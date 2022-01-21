@@ -13,11 +13,12 @@ export const noteSlice = createSlice({
     addNote(state, action) {
       const { note, columnId } = action.payload;
       const id = uuid();
+      const createdAt = Date.now();
       const noteOrder = state.noteOrders[columnId] || [];
       return {
         ...state,
         noteOrders: { ...state.noteOrders, [columnId]: [id, ...noteOrder] },
-        notes: { ...state.notes, [id]: { ...note, id } },
+        notes: { ...state.notes, [id]: { ...note, id, createdAt } },
       };
     },
     loadNotes(state, action) {

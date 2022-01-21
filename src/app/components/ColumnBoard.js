@@ -1,12 +1,12 @@
 import React, { useState, useRef } from "react";
 import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
-import NoteForm from "app/components/NoteForm";
 import ColumnBoardHeader from "app/components/ColumnBoardHeader";
 import ColumnCard from "app/components/ColumnCard";
 import { useColumns, useNotes } from "app/hooks";
 import EditColumnMenu from "app/components/EditColumnMenu";
 import ColumnModal from "app/components/ColumnModal";
+import NoteModal from "app/components/NoteModal";
 import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -37,15 +37,15 @@ const ColumnBoard = (props) => {
   const noteOrder = useSelector((state) =>
     getNoteOrderByColumnId(state, columnId)
   );
-  const [isAddingNote, setIsAddingNote] = useState(false);
+  const [isOpenNoteModal, setIsOpenNoteModal] = useState(false);
   const noteCount = noteOrder?.length || 0;
   const [isOpenEditMenu, setIsOpenEditMenu] = useState(false);
   const anchor = useRef(null);
 
   const [isOpenColumnModal, setIsOpenColumnModal] = useState(false);
 
-  const handleCreate = () => {
-    setIsAddingNote(true);
+  const handleClickCreateNote = () => {
+    setIsOpenNoteModal(true);
   };
 
   const handleOpenEditMenu = () => {
@@ -53,12 +53,11 @@ const ColumnBoard = (props) => {
   };
 
   const handleCancelEditNote = () => {
-    setIsAddingNote(false);
+    setIsOpenNoteModal(false);
   };
 
-  const handleCreateNote = (content) => {
-    const newNote = { content, createdAt: Date.now() };
-    addNote(newNote, columnId);
+  const handleCreateNote = (note) => {
+    addNote(note, columnId);
   };
   const handleCloseEditMenu = () => {
     setIsOpenEditMenu(false);
@@ -85,7 +84,7 @@ const ColumnBoard = (props) => {
         ref={anchor}
         columnName={column.name}
         noteCount={noteCount}
-        onCreate={handleCreate}
+        onCreate={handleClickCreateNote}
         onEdit={handleOpenEditMenu}
       />
       <EditColumnMenu
@@ -103,9 +102,13 @@ const ColumnBoard = (props) => {
         buttonText="Update column"
         title="Edit column"
       />
-      {isAddingNote && (
-        <NoteForm onCreate={handleCreateNote} onCancel={handleCancelEditNote} />
-      )}
+      <NoteModal
+        isOpen={isOpenNoteModal}
+        onClose={handleCancelEditNote}
+        onSubmit={handleCreateNote}
+        buttonText="Add"
+        title="Add note note"
+      />
       {!!noteCount && (
         <div className={classes.columnCards}>
           {noteOrder.map((noteId) => (
