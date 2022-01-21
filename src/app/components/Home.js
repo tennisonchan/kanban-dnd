@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
-import Header from "app/components/Header";
 import EmptyColumn from "app/components/EmptyColumn";
 import ColumnBoard from "app/components/ColumnBoard";
 import { useColumns, useNotes } from "app/hooks";
@@ -86,7 +85,6 @@ function Home(props) {
 
   return (
     <>
-      <Header />
       <div className={classes.columnsContainer}>
         {isNoColumns && <EmptyColumn onSubmit={handleCreateColumn} />}
         {!isNoColumns && (
