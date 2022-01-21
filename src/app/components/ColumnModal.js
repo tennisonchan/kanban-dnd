@@ -29,6 +29,14 @@ const ColumnModal = (props) => {
     onSubmit({ ...column, name: columnName });
   };
 
+  const handleKeyPress = (event) => {
+    if (event.charCode == 13) {
+      event.preventDefault();
+      console.log("value", event.target.value);
+      onSubmit({ ...column, name: columnName });
+    }
+  };
+
   useEffect(() => {
     setColumnName(column?.name);
   }, [column?.name]);
@@ -53,6 +61,7 @@ const ColumnModal = (props) => {
           value={columnName}
           onChange={handleChange}
           autoFocus
+          onKeyPress={handleKeyPress}
         />
       </DialogContent>
       <DialogActions>
