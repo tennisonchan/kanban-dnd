@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
 import NoteForm from "app/components/NoteForm";
@@ -7,14 +7,7 @@ import ColumnCard from "app/components/ColumnCard";
 import { useColumns, useNotes } from "app/hooks";
 import EditColumnMenu from "app/components/EditColumnMenu";
 import ColumnModal from "app/components/ColumnModal";
-import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import {
-  columnActions,
-  columnSlice,
-  columnsState,
-  columnSelectors,
-} from "app/slices/columns";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   columnBoard: {
@@ -39,14 +32,14 @@ const ColumnBoard = (props) => {
   const classes = useStyles();
   const { columnId } = props;
   const [, { editColumn, getColumnById }] = useColumns();
-  const [{ notes }, { loadNotes, addNote, getNoteOrderByColumnId }] =
+  const [{ notes }, { removeColumn, addNote, getNoteOrderByColumnId }] =
     useNotes();
   const column = useSelector((state) => getColumnById(state, columnId));
   const noteOrder = useSelector((state) =>
     getNoteOrderByColumnId(state, columnId)
   );
   const [isAddingNote, setIsAddingNote] = useState(false);
-  const noteCount = noteOrder?.length;
+  const noteCount = noteOrder?.length || 0;
   const [isOpenEditMenu, setIsOpenEditMenu] = useState(false);
   const anchor = useRef(null);
 

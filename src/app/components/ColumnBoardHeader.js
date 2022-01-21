@@ -11,6 +11,9 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(1),
     margin: 0,
     flexGrow: 1,
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
   },
   counter: {
     display: "inline-block",
@@ -45,7 +48,7 @@ const ColumnBoardHeader = (props, ref) => {
     <div className={classes.columnHeader}>
       <span className={classes.counter}>{noteCount}</span>
       <h3 className={classes.columnName}>{columnName}</h3>
-      <div ref={ref}>
+      <div ref={ref} style={{ minWidth: "80px" }}>
         <IconButton onClick={onCreate}>
           <AddIcon className={classes.addNoteIcon} />
         </IconButton>

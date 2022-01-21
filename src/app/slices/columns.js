@@ -19,7 +19,7 @@ export const columnSlice = createSlice({
           ...state.columns,
           [id]: column,
         },
-        columnOrder: [...state.columnOrder, column.id],
+        columnOrder: [...state.columnOrder, id],
       };
     },
     editColumn(state, action) {
