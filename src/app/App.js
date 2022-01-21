@@ -9,15 +9,15 @@ import { store } from "./store";
 const theme = createTheme({
   palette: {
     primary: {
-      light: "#757ce8",
-      main: "#3f50b5",
-      dark: "#002884",
+      light: "#5471d2",
+      main: "#0d46a0",
+      dark: "#002071",
       contrastText: "#fff",
     },
     secondary: {
-      light: "#ff7961",
-      main: "#f44336",
-      dark: "#ba000d",
+      light: "#ff8a50",
+      main: "#ff5722",
+      dark: "#c41c00",
       contrastText: "#000",
     },
   },

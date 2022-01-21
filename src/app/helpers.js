@@ -1,3 +1,5 @@
+import { NOTE_STATUE } from "app/constants";
+
 export const reorderList = (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
@@ -34,3 +36,5 @@ export const calculateOrder = (objectMap, source, destination) => {
     [destination.droppableId]: next,
   };
 };
+
+export const isNoteOpenStatus = (noteStatus) => noteStatus === NOTE_STATUE.OPEN;

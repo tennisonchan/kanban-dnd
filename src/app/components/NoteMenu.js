@@ -5,9 +5,19 @@ import Menu from "@mui/material/Menu";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
+import { isNoteOpenStatus } from "app/helpers";
 
 const NoteMenu = (props) => {
-  const { anchorEl, isOpen, onEdit, onDelete, onClose } = props;
+  const {
+    anchorEl,
+    noteStatus,
+    onChangeStatus,
+    isOpen,
+    onEdit,
+    onDelete,
+    onClose,
+  } = props;
+  const isOpenStatus = isNoteOpenStatus(noteStatus);
 
   const handleEdit = () => {
     onEdit();
@@ -16,6 +26,11 @@ const NoteMenu = (props) => {
 
   const handleDelete = () => {
     onDelete();
+    onClose();
+  };
+
+  const handleToggleStatus = () => {
+    onChangeStatus(!isOpenStatus);
     onClose();
   };
 
@@ -30,6 +45,13 @@ const NoteMenu = (props) => {
         <MenuList>
           <MenuItem onClick={handleEdit}>
             <ListItemText>Edit note</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={handleToggleStatus}>
+            {isOpenStatus ? (
+              <ListItemText>Close issue</ListItemText>
+            ) : (
+              <ListItemText>Reopen issue</ListItemText>
+            )}
           </MenuItem>
           <Divider />
           <MenuItem onClick={handleDelete}>

@@ -9,28 +9,32 @@
       "name": "note 5",
       "content": "content 5",
       "createdAt": 1642715402904,
-      "status": "open"
+      "status": 1,
+      "archived": false
     },
     "6": {
       "id": "6",
       "name": "note 6",
       "content": "content 6",
       "createdAt": 1642715402904,
-      "status": "open"
+      "status": 1,
+      "archived": false
     },
     "3": {
       "id": "3",
       "name": "note 3",
       "content": "content 3",
       "createdAt": 1642715402904,
-      "status": "open"
+      "status": 1,
+      "archived": false
     },
     "4": {
       "id": "4",
       "name": "note 4",
       "content": "content 4",
       "createdAt": 1642715402904,
-      "status": "open"
+      "status": 1,
+      "archived": false
     }
   }
 }

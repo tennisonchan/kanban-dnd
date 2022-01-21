@@ -1,12 +1,16 @@
 import React, { useRef, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import { makeStyles } from "@mui/styles";
-import NotesIcon from "@mui/icons-material/Notes";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import NoteModal from "app/components/NoteModal";
 import { useNotes } from "app/hooks";
 import NoteMenu from "app/components/NoteMenu";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Draggable } from "react-beautiful-dnd";
+import AdjustSharpIcon from "@mui/icons-material/AdjustSharp";
+import CheckCircleOutlineSharpIcon from "@mui/icons-material/CheckCircleOutlineSharp";
+import Tooltip from "@mui/material/Tooltip";
+import { isNoteOpenStatus } from "app/helpers";
+import { NOTE_STATUE } from "app/constants";
 
 const useStyles = makeStyles((theme) => ({
   columnCard: {
@@ -19,6 +23,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(1),
     border: `1px solid ${theme.palette.primary.contrastText}`,
     position: "relative",
+    backgroundColor: "white",
+    color: "#646c72",
   },
   cardIcon: {
     position: "absolute",
@@ -44,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 const ColumnCard = (props) => {
   const classes = useStyles();
   const [isOpenNoteModal, setIsOpenNoteModal] = useState(false);
-  const [, { editNote, removeNote }] = useNotes();
+  const [, { editNote, removeNote, archiveNote }] = useNotes();
   const { note, columnId, index } = props;
   const anchor = useRef(null);
   const [isOpenNoteMenu, setIsOpenNoteMenu] = useState(false);
@@ -57,8 +63,8 @@ const ColumnCard = (props) => {
     setIsOpenNoteModal(false);
   };
 
-  const handleEditNote = (note) => {
-    editNote(note);
+  const handleEditNote = (newNote) => {
+    editNote(newNote);
     handleCloseNoteModal();
   };
 
@@ -71,6 +77,13 @@ const ColumnCard = (props) => {
   const handleDeleteNote = () => {
     removeNote(note.id, columnId);
   };
+  const handleChangeStatus = (isOpenStatus) => {
+    editNote({
+      ...note,
+      status: isOpenStatus ? NOTE_STATUE.OPEN : NOTE_STATUE.CLOSED,
+    });
+    handleCloseNoteMenu();
+  };
 
   return (
     <>
@@ -82,14 +95,24 @@ const ColumnCard = (props) => {
             {...provided.dragHandleProps}
             className={classes.columnCard}
           >
-            <NotesIcon className={classes.cardIcon} />
+            <div className={classes.cardIcon}>
+              {isNoteOpenStatus(note.status) ? (
+                <Tooltip title="Open issue">
+                  <AdjustSharpIcon sx={{ color: "#09b43a" }} />
+                </Tooltip>
+              ) : (
+                <Tooltip title="Closed issue">
+                  <CheckCircleOutlineSharpIcon sx={{ color: "#651fff" }} />
+                </Tooltip>
+              )}
+            </div>
             <div className={classes.cardContent}>
               <small>{note.name}</small>
               <div>{note.content}</div>
             </div>
             <div ref={anchor} className={classes.editCardIconWrap}>
               <IconButton onClick={handleOpenNoteMenu}>
-                <MoreHorizIcon sx={{ color: "primary.contrastText" }} />
+                <MoreHorizIcon />
               </IconButton>
             </div>
           </div>
@@ -98,9 +121,11 @@ const ColumnCard = (props) => {
       <NoteMenu
         anchorEl={anchor.current}
         isOpen={isOpenNoteMenu}
+        noteStatus={note.status}
         onDelete={handleDeleteNote}
         onClose={handleCloseNoteMenu}
         onEdit={handleOpenNoteModal}
+        onChangeStatus={handleChangeStatus}
       />
       <NoteModal
         isOpen={isOpenNoteModal}

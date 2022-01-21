@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
 import ColumnBoardHeader from "app/components/ColumnBoardHeader";
 import ColumnCard from "app/components/ColumnCard";
@@ -8,7 +7,7 @@ import EditColumnMenu from "app/components/EditColumnMenu";
 import ColumnModal from "app/components/ColumnModal";
 import NoteModal from "app/components/NoteModal";
 import { useSelector } from "react-redux";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Droppable, Draggable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles((theme) => ({
   columnBoard: {
@@ -115,7 +114,7 @@ const ColumnBoard = (props) => {
             isOpen={isOpenNoteModal}
             onClose={handleCloseNoteModal}
             onSubmit={handleCreateNote}
-            buttonText="Add"
+            buttonText="Add note"
             title="Add new note"
           />
           {!!noteCount && (

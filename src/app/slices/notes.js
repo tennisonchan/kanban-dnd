@@ -6,29 +6,39 @@ export const noteState = {
   noteOrders: {},
 };
 
+const createNote = (note) => ({
+  id: uuid(), // should be handled in backend
+  status: 1,
+  archived: false,
+  createdAt: Date.now(), // should be handled in backend
+  ...note,
+  updatedAt: Date.now(), // should be handled in backend
+});
+
 export const noteSlice = createSlice({
   name: "note",
   initialState: noteState,
   reducers: {
     addNote(state, action) {
-      const { note, columnId } = action.payload;
-      const id = uuid(); // should be handled in backend
-      const createdAt = Date.now(); // should be handled in backend
+      const { columnId } = action.payload;
+      const note = createNote(action.payload.note);
       const noteOrder = state.noteOrders[columnId] || [];
       return {
         ...state,
-        noteOrders: { ...state.noteOrders, [columnId]: [id, ...noteOrder] },
-        notes: { ...state.notes, [id]: { ...note, id, createdAt } },
+        noteOrders: {
+          ...state.noteOrders,
+          [columnId]: [note.id, ...noteOrder],
+        },
+        notes: { ...state.notes, [note.id]: note },
       };
     },
     editNote(state, action) {
       const { note } = action.payload;
-      const { id } = note;
       return {
         ...state,
         notes: {
           ...state.notes,
-          [id]: note,
+          [note.id]: note,
         },
       };
     },
