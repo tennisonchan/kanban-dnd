@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import { makeStyles } from "@mui/styles";
 import NotesIcon from "@mui/icons-material/Notes";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import NoteModal from "app/components/NoteModal";
+import { useNotes } from "app/hooks";
 
 const useStyles = makeStyles((theme) => ({
   columnCard: {
@@ -39,20 +41,46 @@ const useStyles = makeStyles((theme) => ({
 
 const ColumnCard = (props) => {
   const classes = useStyles();
+  const [isOpenNoteModal, setIsOpenNoteModal] = useState(false);
+  const [, { editNote }] = useNotes();
   const { note } = props;
+
+  const handleOpenNoteModal = () => {
+    setIsOpenNoteModal(true);
+  };
+
+  const handleCloseNoteModal = () => {
+    setIsOpenNoteModal(false);
+  };
+
+  const handleEditNote = (note) => {
+    editNote(note);
+    handleCloseNoteModal();
+  };
+
   return (
-    <div className={classes.columnCard}>
-      <NotesIcon className={classes.cardIcon} />
-      <div className={classes.cardContent}>
-        <small>{note.name}</small>
-        <div>{note.content}</div>
+    <>
+      <div className={classes.columnCard}>
+        <NotesIcon className={classes.cardIcon} />
+        <div className={classes.cardContent}>
+          <small>{note.name}</small>
+          <div>{note.content}</div>
+        </div>
+        <div className={classes.editCardIconWrap}>
+          <IconButton onClick={handleOpenNoteModal}>
+            <MoreHorizIcon sx={{ color: "primary.contrastText" }} />
+          </IconButton>
+        </div>
       </div>
-      <div className={classes.editCardIconWrap}>
-        <IconButton>
-          <MoreHorizIcon sx={{ color: "primary.contrastText" }} />
-        </IconButton>
-      </div>
-    </div>
+      <NoteModal
+        isOpen={isOpenNoteModal}
+        onClose={handleCloseNoteModal}
+        onSubmit={handleEditNote}
+        buttonText="Update"
+        title={`Edit ${note.name}`}
+        note={note}
+      />
+    </>
   );
 };
 

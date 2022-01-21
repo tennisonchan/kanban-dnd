@@ -5,22 +5,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import { makeStyles } from "@mui/styles";
 import Box from "@mui/material/Box";
 
-const useStyles = makeStyles((theme) => ({
-  noteForm: {
-    marginTop: theme.spacing(1),
-    padding: theme.spacing(1),
-    color: `${theme.palette.primary.contrastText}`,
-  },
-  textColor: {
-    color: `${theme.palette.primary.contrastText} !important`,
-  },
-}));
-
 const NoteModal = (props) => {
-  const classes = useStyles();
   const {
     title = "Add a note",
     note = {},

@@ -12,13 +12,24 @@ export const noteSlice = createSlice({
   reducers: {
     addNote(state, action) {
       const { note, columnId } = action.payload;
-      const id = uuid();
-      const createdAt = Date.now();
+      const id = uuid(); // should be handled in backend
+      const createdAt = Date.now(); // should be handled in backend
       const noteOrder = state.noteOrders[columnId] || [];
       return {
         ...state,
         noteOrders: { ...state.noteOrders, [columnId]: [id, ...noteOrder] },
         notes: { ...state.notes, [id]: { ...note, id, createdAt } },
+      };
+    },
+    editNote(state, action) {
+      const { note } = action.payload;
+      const { id } = note;
+      return {
+        ...state,
+        notes: {
+          ...state.notes,
+          [id]: note,
+        },
       };
     },
     loadNotes(state, action) {

@@ -52,7 +52,7 @@ const ColumnBoard = (props) => {
     setIsOpenEditMenu(true);
   };
 
-  const handleCancelEditNote = () => {
+  const handleCloseNoteModal = () => {
     setIsOpenNoteModal(false);
   };
 
@@ -104,10 +104,10 @@ const ColumnBoard = (props) => {
       />
       <NoteModal
         isOpen={isOpenNoteModal}
-        onClose={handleCancelEditNote}
+        onClose={handleCloseNoteModal}
         onSubmit={handleCreateNote}
         buttonText="Add"
-        title="Add note note"
+        title="Add new note"
       />
       {!!noteCount && (
         <div className={classes.columnCards}>
