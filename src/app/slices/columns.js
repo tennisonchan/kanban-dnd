@@ -33,6 +33,13 @@ export const columnSlice = createSlice({
         },
       };
     },
+    reorderColumns(state, action) {
+      const { columnOrder } = action.payload;
+      return {
+        ...state,
+        columnOrder,
+      };
+    },
     removeColumn(state, action) {
       const { id: removeId } = action.payload;
       const { columns } = state;

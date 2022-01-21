@@ -79,8 +79,6 @@ const ColumnBoard = (props) => {
     handleCloseColumnModal();
   };
 
-  console.log({ noteOrder });
-
   return (
     <Draggable key={columnId} draggableId={columnId} index={index}>
       {(draggableProvided) => (

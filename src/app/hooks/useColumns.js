@@ -6,7 +6,7 @@ import {
   getColumnById,
 } from "app/slices/columns";
 
-const { addColumn, editColumn, loadColumns, removeColumn } =
+const { addColumn, editColumn, loadColumns, removeColumn, reorderColumns } =
   columnSlice.actions;
 
 function useColumns() {
@@ -25,6 +25,9 @@ function useColumns() {
       },
       loadColumns: function (payload) {
         dispatch(loadColumns(payload));
+      },
+      reorderColumns: function (columnOrder) {
+        dispatch(reorderColumns({ columnOrder }));
       },
       removeColumn: function (id) {
         dispatch(removeColumn({ id }));

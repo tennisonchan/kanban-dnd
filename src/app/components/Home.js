@@ -43,7 +43,8 @@ const reorder = (list, startIndex, endIndex) => {
 // export default reorder;
 
 function Home(props) {
-  const [{ columnOrder = [] }, { addColumn, loadColumns }] = useColumns();
+  const [{ columnOrder = [] }, { addColumn, loadColumns, reorderColumns }] =
+    useColumns();
   const [, { loadNotes }] = useNotes();
 
   const classes = useStyles();
@@ -97,9 +98,7 @@ function Home(props) {
         source.index,
         destination.index
       );
-
-      console.log({ newColumnOrder, columnOrder });
-
+      reorderColumns(newColumnOrder);
       return;
     }
   };
