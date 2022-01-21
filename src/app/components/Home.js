@@ -63,7 +63,7 @@ function Home(props) {
     const noDestination = !destination;
     const noChanges =
       destination?.index === source.index &&
-      destination?.droppableId == source.droppableId;
+      destination?.droppableId === source.droppableId;
 
     if (noDestination || noChanges) {
       return;

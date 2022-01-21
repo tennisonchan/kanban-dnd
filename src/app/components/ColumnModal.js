@@ -22,15 +22,15 @@ const ColumnModal = (props) => {
   };
   const handleClose = () => {
     onClose();
-    setColumnName("");
   };
 
   const handleSubmit = () => {
     onSubmit({ ...column, name: columnName });
+    setColumnName("");
   };
 
   const handleKeyPress = (event) => {
-    if (event.charCode == 13) {
+    if (event.charCode === 13) {
       event.preventDefault();
       console.log("value", event.target.value);
       onSubmit({ ...column, name: columnName });
