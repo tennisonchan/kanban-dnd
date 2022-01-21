@@ -1,4 +1,5 @@
-import React, { lazy, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import loadable from "@loadable/component";
 import clsx from "clsx";
 import Button from "@mui/material/Button";
 import EmptyColumn from "app/components/EmptyColumn";
@@ -9,8 +10,8 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useSnackbar } from "notistack-v5";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-const ColumnModal = lazy(() => import("app/components/ColumnModal"));
-const ColumnBoard = lazy(() => import("app/components/ColumnBoard"));
+const ColumnModal = loadable(() => import("app/components/ColumnModal"));
+const ColumnBoard = loadable(() => import("app/components/ColumnBoard"));
 
 const useStyles = makeStyles((theme) => ({
   columnsBoards: {

@@ -27,40 +27,40 @@ const theme = createTheme({
   },
 });
 
+const Loading = () => (
+  <Box
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100%",
+    }}
+  >
+    <CircularProgress />
+  </Box>
+);
+
 function App() {
   return (
-    <Suspense
-      fallback={
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      }
+    <SnackbarProvider
+      maxSnack={3}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "center",
+      }}
     >
-      <SnackbarProvider
-        maxSnack={3}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-      >
-        <Provider store={store}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Suspense fallback={<Loading />}>
             <Routes>
               <Route exact path="/" element={<Home />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
-          </ThemeProvider>
-        </Provider>
-      </SnackbarProvider>
-    </Suspense>
+          </Suspense>
+        </ThemeProvider>
+      </Provider>
+    </SnackbarProvider>
   );
 }
 

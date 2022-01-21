@@ -1,4 +1,5 @@
-import React, { lazy, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
+import loadable from "@loadable/component";
 import IconButton from "@mui/material/IconButton";
 import { makeStyles } from "@mui/styles";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -11,8 +12,8 @@ import { isNoteOpenStatus } from "app/helpers";
 import { NOTE_STATUE } from "app/constants";
 import { useSnackbar } from "notistack-v5";
 
-const NoteMenu = lazy(() => import("app/components/NoteMenu"));
-const NoteModal = lazy(() => import("app/components/NoteModal"));
+const NoteMenu = loadable(() => import("app/components/NoteMenu"));
+const NoteModal = loadable(() => import("app/components/NoteModal"));
 
 const useStyles = makeStyles((theme) => ({
   columnCard: {
