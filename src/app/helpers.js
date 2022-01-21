@@ -9,7 +9,7 @@ export const reorderList = (list, startIndex, endIndex) => {
 
 export const calculateOrder = (objectMap, source, destination) => {
   const current = [...objectMap[source.droppableId]];
-  const next = [...objectMap[destination.droppableId]];
+  const next = [...(objectMap[destination.droppableId] || [])];
   const item = current[source.index];
 
   // moving to same column
