@@ -6,10 +6,10 @@ import {
   getColumnById,
   fetchColumns,
   updateColumns,
-  createColumn,
+  createColumnTemplate,
 } from "app/slices/columns";
 
-const { removeColumn, reorderColumns } = columnActions;
+const { reorderColumns } = columnActions;
 
 function useColumns() {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ function useColumns() {
     { columns, columnOrder },
     {
       addColumn: function (payload) {
-        const column = createColumn(payload);
+        const column = createColumnTemplate(payload);
         return dispatch(
           updateColumns({
             columns: {

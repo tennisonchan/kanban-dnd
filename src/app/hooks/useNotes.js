@@ -6,10 +6,11 @@ import {
   getNoteOrderByColumnId,
   getNoteById,
   fetchNotes,
+  updateNotes,
+  createNoteTemplate,
 } from "app/slices/notes";
 
-const { addNote, editNote, removeNote, reorderNotes, archiveNote } =
-  noteActions;
+const { reorderNotes } = noteActions;
 
 function useNotes() {
   const dispatch = useDispatch();
@@ -19,20 +20,63 @@ function useNotes() {
   return [
     { notes, noteOrders },
     {
-      addNote: function (note, columnId) {
-        dispatch(addNote({ note, columnId }));
+      addNote: function (newNote, columnId) {
+        const note = createNoteTemplate(newNote);
+        const noteOrder = noteOrders[columnId] || [];
+        return dispatch(
+          updateNotes({
+            noteOrders: {
+              ...noteOrders,
+              [columnId]: [note.id, ...noteOrder],
+            },
+            notes: { ...notes, [note.id]: note },
+          })
+        );
       },
       editNote: function (note) {
-        dispatch(editNote({ note }));
+        return dispatch(
+          updateNotes({
+            notes: { ...notes, [note.id]: note },
+            noteOrders,
+          })
+        );
       },
-      removeNote: function (id, columnId) {
-        dispatch(removeNote({ id, columnId }));
+      removeNote: function (removeId, columnId) {
+        const noteOrder = noteOrders[columnId].filter((id) => id !== removeId);
+        return dispatch(
+          updateNotes({
+            noteOrders: {
+              ...noteOrders,
+              [columnId]: noteOrder,
+            },
+            notes: {
+              ...notes,
+              [removeId]: null,
+            },
+          })
+        );
       },
       reorderNotes: function (noteOrders) {
         dispatch(reorderNotes({ noteOrders }));
+        dispatch(updateNotes({ notes, noteOrders }));
       },
-      archiveNote: function (id, columnId) {
-        dispatch(archiveNote({ id, columnId }));
+      archiveNote: function (archiveId, columnId) {
+        const noteOrder = noteOrders[columnId].filter((id) => id !== archiveId);
+        return dispatch(
+          updateNotes({
+            noteOrders: {
+              ...noteOrders,
+              [columnId]: noteOrder,
+            },
+            notes: {
+              ...notes,
+              [archiveId]: {
+                ...notes[archiveId],
+                archived: true,
+              },
+            },
+          })
+        );
       },
       fetchNotes: function () {
         dispatch(fetchNotes());

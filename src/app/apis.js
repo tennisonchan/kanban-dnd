@@ -19,3 +19,6 @@ export const putColumns = (payload) =>
 
 export const getNotes = () =>
   axios.get(`${BASE_URL}/b/${NOTES_BIN_ID}/latest`, config);
+
+export const putNotes = (payload) =>
+  axios.put(`${BASE_URL}/b/${NOTES_BIN_ID}/`, payload, config);

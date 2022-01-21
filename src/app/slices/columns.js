@@ -24,7 +24,7 @@ export const updateColumns = createAsyncThunk(
   }
 );
 
-export const createColumn = (column) => ({
+export const createColumnTemplate = (column) => ({
   id: uuid(),
   createdAt: Date.now(), // should be handled in backend
   ...column,
