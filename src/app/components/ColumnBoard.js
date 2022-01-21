@@ -12,8 +12,8 @@ import { useSnackbar } from "notistack-v5";
 
 const useStyles = makeStyles((theme) => ({
   columnBoard: {
-    minWidth: "355px",
-    maxWidth: "355px",
+    width: "calc(100vw - 32px)",
+    maxWidth: "320px",
     borderWidth: "1px",
     borderRadius: "6px",
     display: "flex",
@@ -21,8 +21,12 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.contrastText,
     backgroundColor: theme.palette.primary.main,
     marginRight: theme.spacing(2),
+    marginBottom: theme.spacing(2),
     boxShadow:
       "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
+  },
+  columnBoardMQ: {
+    minWidth: "calc(100vw - 32px)",
   },
   columnCards: {
     paddingLeft: theme.spacing(1),
@@ -135,27 +139,25 @@ const ColumnBoard = (props) => {
             buttonText="Add note"
             title="Add new note"
           />
-          {!!noteCount && (
-            <Droppable droppableId={columnId} type="NOTE" direction="vertical">
-              {(provided) => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  className={classes.columnCards}
-                >
-                  {noteOrder.map((noteId, index) => (
-                    <ColumnCard
-                      key={noteId}
-                      index={index}
-                      note={notes[noteId]}
-                      columnId={columnId}
-                    />
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          )}
+          <Droppable droppableId={columnId} type="NOTE" direction="vertical">
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className={classes.columnCards}
+              >
+                {noteOrder?.map((noteId, index) => (
+                  <ColumnCard
+                    key={noteId}
+                    index={index}
+                    note={notes[noteId]}
+                    columnId={columnId}
+                  />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
         </div>
       )}
     </Draggable>

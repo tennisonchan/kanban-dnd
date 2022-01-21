@@ -4,6 +4,10 @@ This is a Kanban board that support drag-and-drop!
 
 ![ToyPChqYXu](https://user-images.githubusercontent.com/719938/150536916-7d8719ca-bdea-4dfe-b68a-c41c1f0cc640.gif)
 
+## Mobile Friendly
+
+![mlIbYKu0IU](https://user-images.githubusercontent.com/719938/150601282-b8d196b4-64c3-4f38-a952-02344c9618f3.gif)
+
 ## Columns - Support features
 
 - Add column with name

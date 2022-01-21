@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import clsx from "clsx";
 import Button from "@mui/material/Button";
 import EmptyColumn from "app/components/EmptyColumn";
 import ColumnBoard from "app/components/ColumnBoard";
@@ -8,21 +9,28 @@ import ColumnModal from "app/components/ColumnModal";
 import { reorderList, calculateOrder } from "app/helpers";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useSnackbar } from "notistack-v5";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const useStyles = makeStyles((theme) => ({
   columnsBoards: {
     display: "flex",
   },
+  columnsBoardsMediaQuery: {
+    flexWrap: "wrap",
+  },
   columnsContainer: {
     display: "flex",
     padding: theme.spacing(2),
   },
-  newColumnButtonContainer: {},
+  columnContainerMediaQuery: {
+    flexDirection: "column",
+  },
   newColumnButton: {
     padding: "0 !important",
   },
   newColumnButtonText: {
-    width: "315px",
+    width: "calc(100vw - 32px)",
+    maxWidth: "320px",
     paddingTop: theme.spacing(5),
     paddingBottom: theme.spacing(5),
     borderStyle: "dashed",
@@ -40,6 +48,7 @@ function Home(props) {
   const classes = useStyles();
   const isNoColumns = !columnOrder.length;
   const [isOpen, setIsOpen] = useState(false);
+  const isMediaQueryBreakPoint = useMediaQuery("(max-width:640px)");
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -92,7 +101,12 @@ function Home(props) {
 
   return (
     <>
-      <div className={classes.columnsContainer}>
+      <div
+        className={clsx(
+          classes.columnsContainer,
+          isMediaQueryBreakPoint && classes.columnContainerMediaQuery
+        )}
+      >
         {isNoColumns && <EmptyColumn onSubmit={handleCreateColumn} />}
         {!isNoColumns && (
           <>
@@ -100,12 +114,15 @@ function Home(props) {
               <Droppable
                 droppableId="columns"
                 type="COLUMN"
-                direction="horizontal"
+                direction={isMediaQueryBreakPoint ? "vertical" : "horizontal"}
               >
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
-                    className={classes.columnsBoards}
+                    className={clsx(
+                      classes.columnsBoards,
+                      isMediaQueryBreakPoint && classes.columnsBoardsMediaQuery
+                    )}
                   >
                     {columnOrder.map((columnId, index) => {
                       return (
