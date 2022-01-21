@@ -8,6 +8,7 @@ import ColumnModal from "app/components/ColumnModal";
 import NoteModal from "app/components/NoteModal";
 import { useSelector } from "react-redux";
 import { Droppable, Draggable } from "react-beautiful-dnd";
+import { useSnackbar } from "notistack-v5";
 
 const useStyles = makeStyles((theme) => ({
   columnBoard: {
@@ -43,7 +44,7 @@ const ColumnBoard = (props) => {
   const noteCount = noteOrder?.length || 0;
   const [isOpenEditMenu, setIsOpenEditMenu] = useState(false);
   const anchor = useRef(null);
-
+  const { enqueueSnackbar } = useSnackbar();
   const [isOpenColumnModal, setIsOpenColumnModal] = useState(false);
 
   const handleClickCreateNote = () => {
@@ -59,13 +60,23 @@ const ColumnBoard = (props) => {
   };
 
   const handleCreateNote = (note) => {
-    addNote(note, columnId);
+    addNote(note, columnId).then(() => {
+      enqueueSnackbar("You added a new note!", {
+        autoHideDuration: 3000,
+        variant: "success",
+      });
+    });
   };
   const handleCloseEditMenu = () => {
     setIsOpenEditMenu(false);
   };
   const handleDeleteColumn = () => {
-    removeColumn(columnId);
+    removeColumn(columnId).then(() => {
+      enqueueSnackbar("You added a new note!", {
+        autoHideDuration: 3000,
+        variant: "info",
+      });
+    });
     handleCloseEditMenu();
   };
   const handleOpenColumnModel = () => {
@@ -76,7 +87,12 @@ const ColumnBoard = (props) => {
     setIsOpenColumnModal(false);
   };
   const handleEditColumn = (column) => {
-    editColumn(column);
+    editColumn(column).then(() => {
+      enqueueSnackbar("Columns is updated!", {
+        autoHideDuration: 3000,
+        variant: "info",
+      });
+    });
     handleCloseColumnModal();
   };
 

@@ -7,6 +7,7 @@ import { makeStyles } from "@mui/styles";
 import ColumnModal from "app/components/ColumnModal";
 import { reorderList, calculateOrder } from "app/helpers";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { useSnackbar } from "notistack-v5";
 
 const useStyles = makeStyles((theme) => ({
   columnsBoards: {
@@ -35,7 +36,7 @@ function Home(props) {
   const [{ columnOrder = [] }, { addColumn, reorderColumns, fetchColumns }] =
     useColumns();
   const [{ noteOrders }, { reorderNotes, fetchNotes }] = useNotes();
-
+  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const isNoColumns = !columnOrder.length;
   const [isOpen, setIsOpen] = useState(false);
@@ -49,7 +50,13 @@ function Home(props) {
   };
 
   const handleCreateColumn = (column) => {
-    addColumn(column);
+    addColumn(column).then(() => {
+      enqueueSnackbar("You created a new column", {
+        autoHideDuration: 3000,
+        variant: "success",
+      });
+    });
+
     handleClose();
   };
 

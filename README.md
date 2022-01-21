@@ -10,6 +10,7 @@ This is a Kanban board that support drag-and-drop!
 - Change column name
 - Remove column
 - Drag and drop columns
+- Show notification on columns CRUD actions
 
 ## Notes - Support features
 
@@ -18,3 +19,4 @@ This is a Kanban board that support drag-and-drop!
 - Indicate the note status of open or closed
 - Drag and drop the card across columns
 - Archive card
+- Show notification on note CRUD actions

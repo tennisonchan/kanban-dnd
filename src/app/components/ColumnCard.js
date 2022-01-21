@@ -11,6 +11,7 @@ import CheckCircleOutlineSharpIcon from "@mui/icons-material/CheckCircleOutlineS
 import Tooltip from "@mui/material/Tooltip";
 import { isNoteOpenStatus } from "app/helpers";
 import { NOTE_STATUE } from "app/constants";
+import { useSnackbar } from "notistack-v5";
 
 const useStyles = makeStyles((theme) => ({
   columnCard: {
@@ -55,6 +56,7 @@ const ColumnCard = (props) => {
   const { note, columnId, index } = props;
   const anchor = useRef(null);
   const [isOpenNoteMenu, setIsOpenNoteMenu] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleOpenNoteModal = () => {
     setIsOpenNoteModal(true);
@@ -65,7 +67,12 @@ const ColumnCard = (props) => {
   };
 
   const handleEditNote = (newNote) => {
-    editNote(newNote);
+    editNote(newNote).then(() => {
+      enqueueSnackbar("You updated a note!", {
+        autoHideDuration: 3000,
+        variant: "info",
+      });
+    });
     handleCloseNoteModal();
   };
 
@@ -76,15 +83,30 @@ const ColumnCard = (props) => {
     setIsOpenNoteMenu(false);
   };
   const handleDeleteNote = () => {
-    removeNote(note.id, columnId);
+    removeNote(note.id, columnId).then(() => {
+      enqueueSnackbar("You removed a note!", {
+        autoHideDuration: 3000,
+        variant: "info",
+      });
+    });
   };
   const handleArchiveMenu = () => {
-    archiveNote(note.id, columnId);
+    archiveNote(note.id, columnId).then(() => {
+      enqueueSnackbar("You archived a note!", {
+        autoHideDuration: 3000,
+        variant: "info",
+      });
+    });
   };
   const handleChangeStatus = (isOpenStatus) => {
     editNote({
       ...note,
       status: isOpenStatus ? NOTE_STATUE.OPEN : NOTE_STATUE.CLOSED,
+    }).then(() => {
+      enqueueSnackbar("You changed a note status!", {
+        autoHideDuration: 3000,
+        variant: "info",
+      });
     });
     handleCloseNoteMenu();
   };

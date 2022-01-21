@@ -5,6 +5,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import { SnackbarProvider } from "notistack-v5";
 
 const theme = createTheme({
   palette: {
@@ -25,15 +26,23 @@ const theme = createTheme({
 
 function App() {
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </ThemeProvider>
-    </Provider>
+    <SnackbarProvider
+      maxSnack={3}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "center",
+      }}
+    >
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </ThemeProvider>
+      </Provider>
+    </SnackbarProvider>
   );
 }
 
