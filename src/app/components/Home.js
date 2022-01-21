@@ -33,11 +33,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Home(props) {
-  const [
-    { columnOrder = [] },
-    { addColumn, loadColumns, reorderColumns, fetchColumns },
-  ] = useColumns();
-  const [{ noteOrders }, { loadNotes, reorderNotes, fetchNotes }] = useNotes();
+  const [{ columnOrder = [] }, { addColumn, reorderColumns, fetchColumns }] =
+    useColumns();
+  const [{ noteOrders }, { reorderNotes, fetchNotes }] = useNotes();
 
   const classes = useStyles();
   const isNoColumns = !columnOrder.length;

@@ -11,7 +11,11 @@ const config = {
 };
 
 export const getColumns = () =>
-  axios.get(`${BASE_URL}/b/${COLUMNS_BIN_ID}/`, config);
+  axios.get(`${BASE_URL}/b/${COLUMNS_BIN_ID}/latest`, config);
+
+export const putColumns = (payload) =>
+  // cannot use patch for json bin ...
+  axios.put(`${BASE_URL}/b/${COLUMNS_BIN_ID}/`, payload, config);
 
 export const getNotes = () =>
-  axios.get(`${BASE_URL}/b/${NOTES_BIN_ID}/`, config);
+  axios.get(`${BASE_URL}/b/${NOTES_BIN_ID}/latest`, config);

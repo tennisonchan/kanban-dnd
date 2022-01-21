@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
-import { getColumns } from "app/apis";
+import { getColumns, putColumns } from "app/apis";
 
 export const columnState = {
   columns: {},
   columnOrder: [],
+  isLoading: false,
 };
 
 export const fetchColumns = createAsyncThunk(
@@ -15,52 +16,30 @@ export const fetchColumns = createAsyncThunk(
   }
 );
 
+export const updateColumns = createAsyncThunk(
+  "columns/updateColumns",
+  async (payload) => {
+    const resp = await putColumns(payload);
+    return resp.data.data; // why data.data? json bin issue
+  }
+);
+
+export const createColumn = (column) => ({
+  id: uuid(),
+  createdAt: Date.now(), // should be handled in backend
+  ...column,
+  updatedAt: Date.now(), // should be handled in backend
+});
+
 export const columnSlice = createSlice({
   name: "column",
   initialState: columnState,
   reducers: {
-    addColumn(state, action) {
-      const { column } = action.payload;
-      const id = uuid();
-      return {
-        ...state,
-        columns: {
-          ...state.columns,
-          [id]: column,
-        },
-        columnOrder: [...state.columnOrder, id],
-      };
-    },
-    editColumn(state, action) {
-      const { column } = action.payload;
-      const { id } = column;
-      return {
-        ...state,
-        columns: {
-          ...state.columns,
-          [id]: column,
-        },
-      };
-    },
     reorderColumns(state, action) {
       const { columnOrder } = action.payload;
       return {
         ...state,
         columnOrder,
-      };
-    },
-    removeColumn(state, action) {
-      const { id: removeId } = action.payload;
-      const { columns } = state;
-      const columnOrder = state.columnOrder.filter((id) => id !== removeId);
-
-      return {
-        ...state,
-        columnOrder,
-        columns: columnOrder.reduce(
-          (acc, id) => ({ ...acc, [id]: columns[id] }),
-          {}
-        ),
       };
     },
   },
@@ -71,6 +50,21 @@ export const columnSlice = createSlice({
         ...state,
         columns,
         columnOrder,
+      };
+    },
+    [updateColumns.pending.type]: (state, action) => {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    },
+    [updateColumns.fulfilled.type]: (state, action) => {
+      const { columns, columnOrder } = action.payload;
+      return {
+        ...state,
+        columns,
+        columnOrder,
+        isLoading: false,
       };
     },
   },

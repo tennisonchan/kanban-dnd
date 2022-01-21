@@ -5,9 +5,11 @@ import {
   getColumnOrder,
   getColumnById,
   fetchColumns,
+  updateColumns,
+  createColumn,
 } from "app/slices/columns";
 
-const { addColumn, editColumn, removeColumn, reorderColumns } = columnActions;
+const { removeColumn, reorderColumns } = columnActions;
 
 function useColumns() {
   const dispatch = useDispatch();
@@ -17,17 +19,44 @@ function useColumns() {
   return [
     { columns, columnOrder },
     {
-      addColumn: function (column) {
-        dispatch(addColumn({ column }));
+      addColumn: function (payload) {
+        const column = createColumn(payload);
+        return dispatch(
+          updateColumns({
+            columns: {
+              ...columns,
+              [column.id]: column,
+            },
+            columnOrder: [...columnOrder, column.id],
+          })
+        );
       },
       editColumn: function (column) {
-        dispatch(editColumn({ column }));
+        return dispatch(
+          updateColumns({
+            columns: {
+              ...columns,
+              [column.id]: column,
+            },
+            columnOrder,
+          })
+        );
       },
       reorderColumns: function (columnOrder) {
         dispatch(reorderColumns({ columnOrder }));
+        return dispatch(updateColumns({ columns, columnOrder }));
       },
-      removeColumn: function (id) {
-        dispatch(removeColumn({ id }));
+      removeColumn: function (removeId) {
+        const newColumnOrder = columnOrder.filter((id) => id !== removeId);
+        return dispatch(
+          updateColumns({
+            columnOrder: newColumnOrder,
+            columns: newColumnOrder.reduce(
+              (acc, id) => ({ ...acc, [id]: columns[id] }),
+              {}
+            ),
+          })
+        );
       },
       fetchColumns: function () {
         dispatch(fetchColumns());
