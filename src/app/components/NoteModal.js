@@ -67,6 +67,7 @@ const NoteModal = (props) => {
           placeholder="Enter a note name"
           value={noteName}
           onChange={handleChange}
+          autoFocus
         />
         <Box sx={{ paddingTop: 1 }}>
           <TextField
@@ -75,7 +76,6 @@ const NoteModal = (props) => {
             multiline
             maxRows={4}
             fullWidth
-            color="secondary"
             variant="outlined"
             sx={{ flex: 1 }}
             value={noteContent}

@@ -52,6 +52,7 @@ const ColumnModal = (props) => {
           placeholder="Enter a column name (To Do, In Progress, Done)"
           value={columnName}
           onChange={handleChange}
+          autoFocus
         />
       </DialogContent>
       <DialogActions>
