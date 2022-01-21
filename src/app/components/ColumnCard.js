@@ -21,10 +21,11 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
     whiteSpace: "normal",
     borderRadius: theme.spacing(1),
-    border: `1px solid ${theme.palette.primary.contrastText}`,
     position: "relative",
     backgroundColor: "white",
     color: "#646c72",
+    boxShadow:
+      "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
   },
   cardIcon: {
     position: "absolute",
