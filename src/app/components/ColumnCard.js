@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import { makeStyles } from "@mui/styles";
 import NotesIcon from "@mui/icons-material/Notes";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import NoteModal from "app/components/NoteModal";
 import { useNotes } from "app/hooks";
+import NoteMenu from "app/components/NoteMenu";
 
 const useStyles = makeStyles((theme) => ({
   columnCard: {
@@ -42,8 +43,11 @@ const useStyles = makeStyles((theme) => ({
 const ColumnCard = (props) => {
   const classes = useStyles();
   const [isOpenNoteModal, setIsOpenNoteModal] = useState(false);
-  const [, { editNote }] = useNotes();
-  const { note } = props;
+  const [, { editNote, removeNote }] = useNotes();
+  const { note, columnId } = props;
+  const anchor = useRef(null);
+  console.log({ note });
+  const [isOpenNoteMenu, setIsOpenNoteMenu] = useState(false);
 
   const handleOpenNoteModal = () => {
     setIsOpenNoteModal(true);
@@ -58,6 +62,16 @@ const ColumnCard = (props) => {
     handleCloseNoteModal();
   };
 
+  const handleOpenNoteMenu = () => {
+    setIsOpenNoteMenu(true);
+  };
+  const handleCloseNoteMenu = () => {
+    setIsOpenNoteMenu(false);
+  };
+  const handleDeleteNote = () => {
+    removeNote(note.id, columnId);
+  };
+
   return (
     <>
       <div className={classes.columnCard}>
@@ -66,12 +80,19 @@ const ColumnCard = (props) => {
           <small>{note.name}</small>
           <div>{note.content}</div>
         </div>
-        <div className={classes.editCardIconWrap}>
-          <IconButton onClick={handleOpenNoteModal}>
+        <div ref={anchor} className={classes.editCardIconWrap}>
+          <IconButton onClick={handleOpenNoteMenu}>
             <MoreHorizIcon sx={{ color: "primary.contrastText" }} />
           </IconButton>
         </div>
       </div>
+      <NoteMenu
+        anchorEl={anchor.current}
+        isOpen={isOpenNoteMenu}
+        onDelete={handleDeleteNote}
+        onClose={handleCloseNoteMenu}
+        onEdit={handleOpenNoteModal}
+      />
       <NoteModal
         isOpen={isOpenNoteModal}
         onClose={handleCloseNoteModal}

@@ -78,6 +78,8 @@ const ColumnBoard = (props) => {
     handleCloseColumnModal();
   };
 
+  console.log({ noteOrder });
+
   return (
     <Box className={classes.columnBoard}>
       <ColumnBoardHeader
@@ -111,9 +113,16 @@ const ColumnBoard = (props) => {
       />
       {!!noteCount && (
         <div className={classes.columnCards}>
-          {noteOrder.map((noteId) => (
-            <ColumnCard key={noteId} note={notes[noteId]} />
-          ))}
+          {noteOrder.map((noteId) => {
+            console.log({ noteId });
+            return (
+              <ColumnCard
+                key={noteId}
+                note={notes[noteId]}
+                columnId={columnId}
+              />
+            );
+          })}
         </div>
       )}
     </Box>

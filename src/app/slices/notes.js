@@ -32,6 +32,25 @@ export const noteSlice = createSlice({
         },
       };
     },
+    removeNote(state, action) {
+      const { id: removeId, columnId } = action.payload;
+      const { notes } = state;
+      const noteOrder = state.noteOrders[columnId].filter(
+        (id) => id !== removeId
+      );
+
+      return {
+        ...state,
+        noteOrders: {
+          ...state.noteOrders,
+          [columnId]: noteOrder,
+        },
+        notes: {
+          ...state.notes,
+          [removeId]: null,
+        },
+      };
+    },
     loadNotes(state, action) {
       const { notes, noteOrders } = action.payload;
       return {
