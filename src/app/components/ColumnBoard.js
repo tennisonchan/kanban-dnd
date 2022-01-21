@@ -7,6 +7,13 @@ import ColumnCard from "app/components/ColumnCard";
 import { useColumns, useNotes } from "app/hooks";
 import EditColumnMenu from "app/components/EditColumnMenu";
 import ColumnModal from "app/components/ColumnModal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  columnActions,
+  columnSlice,
+  columnsState,
+  columnSelectors,
+} from "app/slices/columns";
 
 const useStyles = makeStyles((theme) => ({
   columnBoard: {
@@ -28,12 +35,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ColumnBoard = (props) => {
-  const { column } = props;
-  const [_, { editColumn }] = useColumns();
-  const [{ notes = {}, noteOrders = {} }, { addNote }] = useNotes();
-  const { id: columnId, name } = column;
-  const noteOrder = noteOrders?.[columnId] || [];
   const classes = useStyles();
+  const { columnId } = props;
+  const [, { editColumn, getColumnById }] = useColumns();
+  const [{ notes = {}, noteOrders = {} }, { addNote }] = useNotes();
+  const column = useSelector((state) => getColumnById(state, columnId));
+  const noteOrder = noteOrders?.[columnId] || [];
   const [isAddingNote, setIsAddingNote] = useState(false);
   const noteCount = noteOrder.length;
   const [isOpenEditMenu, setIsOpenEditMenu] = useState(false);
@@ -68,8 +75,8 @@ const ColumnBoard = (props) => {
   const handleCloseColumnModal = () => {
     setIsOpenColumnModal(false);
   };
-  const handleEditColumn = (updatedColumn) => {
-    editColumn(updatedColumn);
+  const handleEditColumn = (column) => {
+    editColumn(column);
     handleCloseColumnModal();
   };
 
@@ -77,7 +84,7 @@ const ColumnBoard = (props) => {
     <Box className={classes.columnBoard}>
       <ColumnBoardHeader
         ref={anchor}
-        columnName={name}
+        columnName={column.name}
         noteCount={noteCount}
         onCreate={handleCreate}
         onEdit={handleOpenEditMenu}

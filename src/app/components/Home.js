@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Header from "app/components/Header";
 import EmptyColumn from "app/components/EmptyColumn";
@@ -6,6 +6,7 @@ import ColumnBoard from "app/components/ColumnBoard";
 import { useColumns, useNotes } from "app/hooks";
 import { makeStyles } from "@mui/styles";
 import ColumnModal from "app/components/ColumnModal";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   columnsBoards: {
@@ -29,10 +30,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Home(props) {
-  const [{ columns = {}, columnOrder = [] }, { addColumn }] = useColumns();
+  const [{ columnOrder = [] }, { addColumn, loadColumns }] = useColumns();
   const [{ notes = {} }] = useNotes();
   const classes = useStyles();
-  console.log(columns, columnOrder);
   const isNoColumns = !columnOrder.length;
   const [isOpen, setIsOpen] = useState(false);
 
@@ -49,6 +49,15 @@ function Home(props) {
     handleClose();
   };
 
+  useEffect(() => {
+    async function fetchColumns() {
+      const resp = await axios.get("./dummy/columns.json");
+      console.log(resp.data);
+      loadColumns(resp.data);
+    }
+    fetchColumns();
+  }, []);
+
   return (
     <>
       <Header />
@@ -57,11 +66,7 @@ function Home(props) {
         <div className={classes.columnsBoards}>
           {columnOrder.map((columnId) => {
             return (
-              <ColumnBoard
-                key={columnId}
-                column={columns[columnId]}
-                notes={notes}
-              />
+              <ColumnBoard key={columnId} columnId={columnId} notes={notes} />
             );
           })}
           <div className={classes.newColumnButtonContainer}>
