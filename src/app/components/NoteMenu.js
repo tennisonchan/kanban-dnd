@@ -16,6 +16,7 @@ const NoteMenu = (props) => {
     onEdit,
     onDelete,
     onClose,
+    onArchive,
   } = props;
   const isOpenStatus = isNoteOpenStatus(noteStatus);
 
@@ -26,6 +27,11 @@ const NoteMenu = (props) => {
 
   const handleDelete = () => {
     onDelete();
+    onClose();
+  };
+
+  const handleArchive = () => {
+    onArchive();
     onClose();
   };
 
@@ -54,6 +60,9 @@ const NoteMenu = (props) => {
             )}
           </MenuItem>
           <Divider />
+          <MenuItem onClick={handleArchive}>
+            <ListItemText>Archive note</ListItemText>
+          </MenuItem>
           <MenuItem onClick={handleDelete}>
             <ListItemText>Delete note</ListItemText>
           </MenuItem>

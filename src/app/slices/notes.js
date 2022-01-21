@@ -64,6 +64,26 @@ export const noteSlice = createSlice({
       const { noteOrders } = action.payload;
       return { ...state, noteOrders };
     },
+    archiveNote(state, action) {
+      const { id: archiveId, columnId } = action.payload;
+      const noteOrder = state.noteOrders[columnId].filter(
+        (id) => id !== archiveId
+      );
+      return {
+        ...state,
+        noteOrders: {
+          ...state.noteOrders,
+          [columnId]: noteOrder,
+        },
+        notes: {
+          ...state.notes,
+          [archiveId]: {
+            ...state.notes[archiveId],
+            archived: true,
+          },
+        },
+      };
+    },
     loadNotes(state, action) {
       const { notes, noteOrders } = action.payload;
       return {

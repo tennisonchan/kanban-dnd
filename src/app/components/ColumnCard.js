@@ -77,6 +77,9 @@ const ColumnCard = (props) => {
   const handleDeleteNote = () => {
     removeNote(note.id, columnId);
   };
+  const handleArchiveMenu = () => {
+    archiveNote(note.id, columnId);
+  };
   const handleChangeStatus = (isOpenStatus) => {
     editNote({
       ...note,
@@ -125,6 +128,7 @@ const ColumnCard = (props) => {
         onDelete={handleDeleteNote}
         onClose={handleCloseNoteMenu}
         onEdit={handleOpenNoteModal}
+        onArchive={handleArchiveMenu}
         onChangeStatus={handleChangeStatus}
       />
       <NoteModal
