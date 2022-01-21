@@ -7,6 +7,7 @@ import { useColumns, useNotes } from "app/hooks";
 import { makeStyles } from "@mui/styles";
 import ColumnModal from "app/components/ColumnModal";
 import axios from "axios";
+import { reorderList, calculateOrder } from "app/helpers";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles((theme) => ({
@@ -32,20 +33,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
-
-// export default reorder;
-
 function Home(props) {
   const [{ columnOrder = [] }, { addColumn, loadColumns, reorderColumns }] =
     useColumns();
-  const [, { loadNotes }] = useNotes();
+  const [{ noteOrders }, { loadNotes, reorderNotes }] = useNotes();
 
   const classes = useStyles();
   const isNoColumns = !columnOrder.length;
@@ -90,10 +81,9 @@ function Home(props) {
     if (noDestination || noChanges) {
       return;
     }
-    console.log(result);
 
     if (type === "COLUMN") {
-      const newColumnOrder = reorder(
+      const newColumnOrder = reorderList(
         columnOrder,
         source.index,
         destination.index
@@ -101,6 +91,9 @@ function Home(props) {
       reorderColumns(newColumnOrder);
       return;
     }
+
+    const newNoteOrders = calculateOrder(noteOrders, source, destination);
+    reorderNotes(newNoteOrders);
   };
 
   return (

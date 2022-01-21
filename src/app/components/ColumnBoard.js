@@ -119,7 +119,7 @@ const ColumnBoard = (props) => {
             title="Add new note"
           />
           {!!noteCount && (
-            <Droppable droppableId="notes" type="NOTE" direction="vertical">
+            <Droppable droppableId={columnId} type="NOTE" direction="vertical">
               {(provided) => (
                 <div
                   ref={provided.innerRef}

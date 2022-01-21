@@ -50,6 +50,10 @@ export const noteSlice = createSlice({
         },
       };
     },
+    reorderNotes(state, action) {
+      const { noteOrders } = action.payload;
+      return { ...state, noteOrders };
+    },
     loadNotes(state, action) {
       const { notes, noteOrders } = action.payload;
       return {

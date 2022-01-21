@@ -7,7 +7,8 @@ import {
   getNoteById,
 } from "app/slices/notes";
 
-const { addNote, editNote, removeNote, loadNotes } = noteSlice.actions;
+const { addNote, editNote, removeNote, loadNotes, reorderNotes } =
+  noteSlice.actions;
 
 function useNotes() {
   const dispatch = useDispatch();
@@ -28,6 +29,9 @@ function useNotes() {
       },
       removeNote: function (id, columnId) {
         dispatch(removeNote({ id, columnId }));
+      },
+      reorderNotes: function (noteOrders) {
+        dispatch(reorderNotes({ noteOrders }));
       },
       getNoteOrderByColumnId,
       getNoteById,
