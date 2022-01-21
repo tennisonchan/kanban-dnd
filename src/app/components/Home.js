@@ -31,7 +31,8 @@ const useStyles = makeStyles((theme) => ({
 
 function Home(props) {
   const [{ columnOrder = [] }, { addColumn, loadColumns }] = useColumns();
-  const [{ notes = {} }] = useNotes();
+  const [, { loadNotes }] = useNotes();
+
   const classes = useStyles();
   const isNoColumns = !columnOrder.length;
   const [isOpen, setIsOpen] = useState(false);
@@ -52,10 +53,17 @@ function Home(props) {
   useEffect(() => {
     async function fetchColumns() {
       const resp = await axios.get("./dummy/columns.json");
-      console.log(resp.data);
       loadColumns(resp.data);
     }
     fetchColumns();
+  }, []);
+
+  useEffect(() => {
+    async function fetchNote() {
+      const resp = await axios.get("./dummy/notes.json");
+      loadNotes(resp.data);
+    }
+    fetchNote();
   }, []);
 
   return (
@@ -65,9 +73,7 @@ function Home(props) {
       {!isNoColumns && (
         <div className={classes.columnsBoards}>
           {columnOrder.map((columnId) => {
-            return (
-              <ColumnBoard key={columnId} columnId={columnId} notes={notes} />
-            );
+            return <ColumnBoard key={columnId} columnId={columnId} />;
           })}
           <div className={classes.newColumnButtonContainer}>
             <Button onClick={handleOpen} className={classes.newColumnButton}>

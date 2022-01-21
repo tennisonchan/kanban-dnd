@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
 import NoteForm from "app/components/NoteForm";
@@ -8,6 +8,7 @@ import { useColumns, useNotes } from "app/hooks";
 import EditColumnMenu from "app/components/EditColumnMenu";
 import ColumnModal from "app/components/ColumnModal";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 import {
   columnActions,
   columnSlice,
@@ -38,11 +39,14 @@ const ColumnBoard = (props) => {
   const classes = useStyles();
   const { columnId } = props;
   const [, { editColumn, getColumnById }] = useColumns();
-  const [{ notes = {}, noteOrders = {} }, { addNote }] = useNotes();
+  const [{ notes }, { loadNotes, addNote, getNoteOrderByColumnId }] =
+    useNotes();
   const column = useSelector((state) => getColumnById(state, columnId));
-  const noteOrder = noteOrders?.[columnId] || [];
+  const noteOrder = useSelector((state) =>
+    getNoteOrderByColumnId(state, columnId)
+  );
   const [isAddingNote, setIsAddingNote] = useState(false);
-  const noteCount = noteOrder.length;
+  const noteCount = noteOrder?.length;
   const [isOpenEditMenu, setIsOpenEditMenu] = useState(false);
   const anchor = useRef(null);
 
@@ -107,11 +111,13 @@ const ColumnBoard = (props) => {
       {isAddingNote && (
         <NoteForm onCreate={handleCreateNote} onCancel={handleCancelEditNote} />
       )}
-      <div className={classes.columnCards}>
-        {noteOrder.map((noteId) => (
-          <ColumnCard key={noteId} note={notes[noteId]} />
-        ))}
-      </div>
+      {!!noteCount && (
+        <div className={classes.columnCards}>
+          {noteOrder.map((noteId) => (
+            <ColumnCard key={noteId} note={notes[noteId]} />
+          ))}
+        </div>
+      )}
     </Box>
   );
 };

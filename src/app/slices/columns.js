@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
-import { columnState } from "app/store";
+
+export const columnState = {
+  columns: {},
+  columnOrder: [],
+};
 
 export const columnSlice = createSlice({
   name: "column",
@@ -9,7 +13,7 @@ export const columnSlice = createSlice({
     addColumn(state, action) {
       const { column } = action.payload;
       const id = uuid();
-      state = {
+      return {
         ...state,
         columns: {
           ...state.columns,
@@ -20,20 +24,22 @@ export const columnSlice = createSlice({
     },
     editColumn(state, action) {
       const { column } = action.payload;
-      const { id, ...changes } = column;
-      state.columns[id] = {
-        ...state.columns[id],
-        ...changes,
+      const { id } = column;
+      return {
+        ...state,
+        columns: {
+          ...state.columns,
+          [id]: column,
+        },
       };
     },
     loadColumns(state, action) {
       const { columns, columnOrder } = action.payload;
-      state = {
+      return {
         ...state,
         columns,
         columnOrder,
       };
-      return state;
     },
   },
 });

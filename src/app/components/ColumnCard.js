@@ -36,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
 const ColumnCard = (props) => {
   const classes = useStyles();
   const { note } = props;
-  console.log({ note });
   return (
     <div className={classes.columnCard}>
       <NotesIcon className={classes.cardIcon} />
