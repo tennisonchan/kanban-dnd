@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { lazy, useState, useEffect } from "react";
 import clsx from "clsx";
 import Button from "@mui/material/Button";
 import EmptyColumn from "app/components/EmptyColumn";
-import ColumnBoard from "app/components/ColumnBoard";
 import { useColumns, useNotes } from "app/hooks";
 import { makeStyles } from "@mui/styles";
-import ColumnModal from "app/components/ColumnModal";
 import { reorderList, calculateOrder } from "app/helpers";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useSnackbar } from "notistack-v5";
 import useMediaQuery from "@mui/material/useMediaQuery";
+
+const ColumnModal = lazy(() => import("app/components/ColumnModal"));
+const ColumnBoard = lazy(() => import("app/components/ColumnBoard"));
 
 const useStyles = makeStyles((theme) => ({
   columnsBoards: {

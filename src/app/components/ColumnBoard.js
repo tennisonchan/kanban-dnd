@@ -1,14 +1,17 @@
-import React, { useState, useRef } from "react";
+import React, { lazy, useState, useRef } from "react";
 import { makeStyles } from "@mui/styles";
-import ColumnBoardHeader from "app/components/ColumnBoardHeader";
-import ColumnCard from "app/components/ColumnCard";
 import { useColumns, useNotes } from "app/hooks";
-import EditColumnMenu from "app/components/EditColumnMenu";
-import ColumnModal from "app/components/ColumnModal";
-import NoteModal from "app/components/NoteModal";
 import { useSelector } from "react-redux";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { useSnackbar } from "notistack-v5";
+
+const ColumnBoardHeader = lazy(() =>
+  import("app/components/ColumnBoardHeader")
+);
+const ColumnCard = lazy(() => import("app/components/ColumnCard"));
+const ColumnModal = lazy(() => import("app/components/ColumnModal"));
+const EditColumnMenu = lazy(() => import("app/components/EditColumnMenu"));
+const NoteModal = lazy(() => import("app/components/NoteModal"));
 
 const useStyles = makeStyles((theme) => ({
   columnBoard: {

@@ -1,10 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { lazy, useRef, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import { makeStyles } from "@mui/styles";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import NoteModal from "app/components/NoteModal";
 import { useNotes } from "app/hooks";
-import NoteMenu from "app/components/NoteMenu";
 import { Draggable } from "react-beautiful-dnd";
 import AdjustSharpIcon from "@mui/icons-material/AdjustSharp";
 import CheckCircleOutlineSharpIcon from "@mui/icons-material/CheckCircleOutlineSharp";
@@ -12,6 +10,9 @@ import Tooltip from "@mui/material/Tooltip";
 import { isNoteOpenStatus } from "app/helpers";
 import { NOTE_STATUE } from "app/constants";
 import { useSnackbar } from "notistack-v5";
+
+const NoteMenu = lazy(() => import("app/components/NoteMenu"));
+const NoteModal = lazy(() => import("app/components/NoteModal"));
 
 const useStyles = makeStyles((theme) => ({
   columnCard: {

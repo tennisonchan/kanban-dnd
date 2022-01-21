@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { lazy, useState } from "react";
 import Button from "@mui/material/Button";
-import ColumnModal from "app/components/ColumnModal";
 import { makeStyles } from "@mui/styles";
+
+const ColumnModal = lazy(() => import("app/components/ColumnModal"));
 
 const useStyles = makeStyles((theme) => ({
   emptyColumn: {
