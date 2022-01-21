@@ -1,13 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
+  columnActions,
   columnSlice,
   getColumns,
   getColumnOrder,
   getColumnById,
+  fetchColumns,
 } from "app/slices/columns";
 
-const { addColumn, editColumn, loadColumns, removeColumn, reorderColumns } =
-  columnSlice.actions;
+const {
+  addColumn,
+  editColumn,
+  // loadColumns,
+  removeColumn,
+  reorderColumns,
+} = columnActions;
 
 function useColumns() {
   const dispatch = useDispatch();

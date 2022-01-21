@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
   },
 }));
 

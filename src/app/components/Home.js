@@ -6,9 +6,9 @@ import ColumnBoard from "app/components/ColumnBoard";
 import { useColumns, useNotes } from "app/hooks";
 import { makeStyles } from "@mui/styles";
 import ColumnModal from "app/components/ColumnModal";
-import axios from "axios";
 import { reorderList, calculateOrder } from "app/helpers";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { fetchData } from "app/apis";
 
 const useStyles = makeStyles((theme) => ({
   columnsBoards: {
@@ -56,19 +56,7 @@ function Home(props) {
   };
 
   useEffect(() => {
-    async function fetchColumns() {
-      const resp = await axios.get("./dummy/columns.json");
-      loadColumns(resp.data);
-    }
     fetchColumns();
-  }, []);
-
-  useEffect(() => {
-    async function fetchNote() {
-      const resp = await axios.get("./dummy/notes.json");
-      loadNotes(resp.data);
-    }
-    fetchNote();
   }, []);
 
   const onDragEnd = (result) => {
