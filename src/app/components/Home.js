@@ -8,7 +8,6 @@ import { makeStyles } from "@mui/styles";
 import ColumnModal from "app/components/ColumnModal";
 import { reorderList, calculateOrder } from "app/helpers";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { fetchData } from "app/apis";
 
 const useStyles = makeStyles((theme) => ({
   columnsBoards: {
@@ -34,9 +33,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Home(props) {
-  const [{ columnOrder = [] }, { addColumn, loadColumns, reorderColumns }] =
-    useColumns();
-  const [{ noteOrders }, { loadNotes, reorderNotes }] = useNotes();
+  const [
+    { columnOrder = [] },
+    { addColumn, loadColumns, reorderColumns, fetchColumns },
+  ] = useColumns();
+  const [{ noteOrders }, { loadNotes, reorderNotes, fetchNotes }] = useNotes();
 
   const classes = useStyles();
   const isNoColumns = !columnOrder.length;
@@ -57,6 +58,7 @@ function Home(props) {
 
   useEffect(() => {
     fetchColumns();
+    fetchNotes();
   }, []);
 
   const onDragEnd = (result) => {

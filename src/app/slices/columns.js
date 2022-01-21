@@ -1,10 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
+import { getColumns } from "app/apis";
 
 export const columnState = {
   columns: {},
   columnOrder: [],
 };
+
+export const fetchColumns = createAsyncThunk(
+  "columns/fetchColumns",
+  async () => {
+    const resp = await getColumns();
+    return resp.data;
+  }
+);
 
 export const columnSlice = createSlice({
   name: "column",
@@ -54,7 +63,9 @@ export const columnSlice = createSlice({
         ),
       };
     },
-    loadColumns(state, action) {
+  },
+  extraReducers: {
+    [fetchColumns.fulfilled.type]: (state, action) => {
       const { columns, columnOrder } = action.payload;
       return {
         ...state,
@@ -65,8 +76,8 @@ export const columnSlice = createSlice({
   },
 });
 
-export const getColumns = (state) => state[columnSlice.name].columns;
+export const getColumnsSelector = (state) => state[columnSlice.name].columns;
 export const getColumnOrder = (state) => state[columnSlice.name].columnOrder;
-export const getColumnById = (state, id) => getColumns(state)?.[id];
+export const getColumnById = (state, id) => getColumnsSelector(state)?.[id];
 
 export const columnActions = columnSlice.actions;

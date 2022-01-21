@@ -1,5 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
+import { getNotes } from "app/apis";
 
 export const noteState = {
   notes: {},
@@ -13,6 +14,11 @@ const createNote = (note) => ({
   createdAt: Date.now(), // should be handled in backend
   ...note,
   updatedAt: Date.now(), // should be handled in backend
+});
+
+export const fetchNotes = createAsyncThunk("notes/fetchNotes", async () => {
+  const resp = await getNotes();
+  return resp.data;
 });
 
 export const noteSlice = createSlice({
@@ -84,7 +90,9 @@ export const noteSlice = createSlice({
         },
       };
     },
-    loadNotes(state, action) {
+  },
+  extraReducers: {
+    [fetchNotes.fulfilled.type]: (state, action) => {
       const { notes, noteOrders } = action.payload;
       return {
         ...state,
@@ -96,7 +104,7 @@ export const noteSlice = createSlice({
 });
 
 const getNoteState = (state) => state[noteSlice.name];
-export const getNotes = (state) => getNoteState(state).notes;
+export const getNotesSelector = (state) => getNoteState(state).notes;
 export const getNoteOrders = (state) => getNoteState(state).noteOrders;
 export const getNoteOrderByColumnId = (state, columnId) =>
   getNoteOrders(state)?.[columnId];

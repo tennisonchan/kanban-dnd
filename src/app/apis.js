@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const BASE_URL = "https://api.jsonbin.io";
-const BIN_ID = "61ea80db3282972ff67ffaf2";
+const COLUMNS_BIN_ID = "61ea80db3282972ff67ffaf2";
+const NOTES_BIN_ID = "61ea990da785682f9719f4ab";
 const config = {
   headers: {
     "secret-key": process.env.REACT_APP_SECRET_KEY,
@@ -9,6 +10,8 @@ const config = {
   },
 };
 
-export const fetchData = () => axios.get(`${BASE_URL}/b/${BIN_ID}/`, config);
+export const getColumns = () =>
+  axios.get(`${BASE_URL}/b/${COLUMNS_BIN_ID}/`, config);
 
-export const updateData = () => {};
+export const getNotes = () =>
+  axios.get(`${BASE_URL}/b/${NOTES_BIN_ID}/`, config);

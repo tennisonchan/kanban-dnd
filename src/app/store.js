@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { columnSlice } from "app/slices/columns";
 import { noteSlice } from "app/slices/notes";
 
@@ -7,4 +7,6 @@ export const store = configureStore({
     [columnSlice.name]: columnSlice.reducer,
     [noteSlice.name]: noteSlice.reducer,
   },
+  devTools: true,
+  middleware: [...getDefaultMiddleware()],
 });

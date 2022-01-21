@@ -1,18 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-  noteSlice,
-  getNotes,
+  noteActions,
+  getNotesSelector,
   getNoteOrders,
   getNoteOrderByColumnId,
   getNoteById,
+  fetchNotes,
 } from "app/slices/notes";
 
-const { addNote, editNote, removeNote, loadNotes, reorderNotes, archiveNote } =
-  noteSlice.actions;
+const { addNote, editNote, removeNote, reorderNotes, archiveNote } =
+  noteActions;
 
 function useNotes() {
   const dispatch = useDispatch();
-  const notes = useSelector(getNotes);
+  const notes = useSelector(getNotesSelector);
   const noteOrders = useSelector(getNoteOrders);
 
   return [
@@ -24,9 +25,6 @@ function useNotes() {
       editNote: function (note) {
         dispatch(editNote({ note }));
       },
-      loadNotes: function (payload) {
-        dispatch(loadNotes(payload));
-      },
       removeNote: function (id, columnId) {
         dispatch(removeNote({ id, columnId }));
       },
@@ -36,9 +34,12 @@ function useNotes() {
       archiveNote: function (id, columnId) {
         dispatch(archiveNote({ id, columnId }));
       },
+      fetchNotes: function () {
+        dispatch(fetchNotes());
+      },
       getNoteOrderByColumnId,
       getNoteById,
-      getNotes,
+      getNotesSelector,
       getNoteOrders,
     },
   ];
