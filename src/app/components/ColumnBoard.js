@@ -10,6 +10,7 @@ import {
 import { useSelector } from "react-redux";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { useSnackbar } from "notistack-v5";
+import { useTranslation } from "react-i18next";
 
 const ColumnBoardHeader = loadable(() =>
   import("app/components/ColumnBoardHeader")
@@ -46,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ColumnBoard = (props) => {
   const classes = useStyles();
+  const { t } = useTranslation();
   const { projectId, columnId, index } = props;
   const [{ notes }, { addNote }] = useNotes(projectId, columnId);
   const [, { removeColumn, editColumn }] = useColumns(projectId);
@@ -77,7 +79,7 @@ const ColumnBoard = (props) => {
 
   const handleCreateNote = (note) => {
     addNote(note, columnId).then(() => {
-      enqueueSnackbar("You added a new note!", {
+      enqueueSnackbar(t("ColumnBoard.Snackbar.handleCreateNote.text"), {
         autoHideDuration: 3000,
         variant: "success",
       });
@@ -88,7 +90,7 @@ const ColumnBoard = (props) => {
   };
   const handleDeleteColumn = () => {
     removeColumn(columnId).then(() => {
-      enqueueSnackbar("You removed a note!", {
+      enqueueSnackbar(t("ColumnBoard.Snackbar.handleDeleteColumn.text"), {
         autoHideDuration: 3000,
         variant: "info",
       });
@@ -104,7 +106,7 @@ const ColumnBoard = (props) => {
   };
   const handleEditColumn = (column) => {
     editColumn(column).then(() => {
-      enqueueSnackbar("Columns is updated!", {
+      enqueueSnackbar(t("ColumnBoard.Snackbar.handleEditColumn.text"), {
         autoHideDuration: 3000,
         variant: "info",
       });
@@ -141,15 +143,15 @@ const ColumnBoard = (props) => {
             onClose={handleCloseColumnModal}
             onSubmit={handleEditColumn}
             column={column}
-            buttonText="Update column"
-            title="Edit column"
+            buttonText={t("ColumnBoard.ColumnModal.buttonText")}
+            title={t("ColumnBoard.ColumnModal.title")}
           />
           <NoteModal
             isOpen={isOpenNoteModal}
             onClose={handleCloseNoteModal}
             onSubmit={handleCreateNote}
-            buttonText="Add note"
-            title="Add new note"
+            buttonText={t("ColumnBoard.NoteModal.buttonText")}
+            title={t("ColumnBoard.NoteModal.title")}
           />
           <Droppable droppableId={columnId} type="NOTE" direction="vertical">
             {(provided) => (

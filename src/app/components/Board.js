@@ -10,6 +10,7 @@ import { makeStyles } from "@mui/styles";
 import { reorderList, calculateOrder } from "app/helpers";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useSnackbar } from "notistack-v5";
+import { useTranslation } from "react-i18next";
 
 const ColumnModal = loadable(() => import("app/components/ColumnModal"));
 const ColumnBoard = loadable(() => import("app/components/ColumnBoard"));
@@ -45,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Board(props) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { projectId } = useParams();
   const [
     { columnOrder = [], noteOrders = {} },
@@ -67,7 +69,7 @@ function Board(props) {
 
   const handleCreateColumn = (column) => {
     addColumn(column).then(() => {
-      enqueueSnackbar("You created a new column", {
+      enqueueSnackbar(t("Board.Snackbar.handleCreateColumn.text"), {
         autoHideDuration: 3000,
         variant: "success",
       });
@@ -154,14 +156,16 @@ function Board(props) {
           </DragDropContext>
           <div>
             <Button onClick={handleOpen} className={classes.newColumnButton}>
-              <span className={classes.newColumnButtonText}>+ Add column</span>
+              <span className={classes.newColumnButtonText}>
+                {t("Board.Button.newColumnButtonText")}
+              </span>
             </Button>
             <ColumnModal
-              title="Add a column"
+              title={t("Board.ColumnModal.title")}
               isOpen={isOpen}
               onClose={handleClose}
               onSubmit={handleCreateColumn}
-              buttonText="Create column"
+              buttonText={t("Board.ColumnModal.buttonText")}
             />
           </div>
         </>

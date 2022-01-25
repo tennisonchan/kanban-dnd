@@ -11,6 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { isNoteOpenStatus } from "app/helpers";
 import { NOTE_STATUE } from "app/constants";
 import { useSnackbar } from "notistack-v5";
+import { useTranslation } from "react-i18next";
 
 const NoteMenu = loadable(() => import("app/components/NoteMenu"));
 const NoteModal = loadable(() => import("app/components/NoteModal"));
@@ -54,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
 const ColumnCard = (props) => {
   const { note, columnId, index, projectId } = props;
   const classes = useStyles();
+  const { t } = useTranslation();
   const [isOpenNoteModal, setIsOpenNoteModal] = useState(false);
   const [, { editNote, removeNote, archiveNote }] = useNotes(
     projectId,
@@ -73,7 +75,7 @@ const ColumnCard = (props) => {
 
   const handleEditNote = (newNote) => {
     editNote(newNote).then(() => {
-      enqueueSnackbar("You updated a note!", {
+      enqueueSnackbar(t("ColumnCard.Snackbar.handleEditNote.text"), {
         autoHideDuration: 3000,
         variant: "info",
       });
@@ -89,7 +91,7 @@ const ColumnCard = (props) => {
   };
   const handleDeleteNote = () => {
     removeNote(note.id).then(() => {
-      enqueueSnackbar("You removed a note!", {
+      enqueueSnackbar(t("ColumnCard.Snackbar.handleDeleteNote.text"), {
         autoHideDuration: 3000,
         variant: "info",
       });
@@ -97,7 +99,7 @@ const ColumnCard = (props) => {
   };
   const handleArchiveMenu = () => {
     archiveNote(note.id).then(() => {
-      enqueueSnackbar("You archived a note!", {
+      enqueueSnackbar(t("ColumnCard.Snackbar.handleArchiveMenu.text"), {
         autoHideDuration: 3000,
         variant: "info",
       });
@@ -108,7 +110,7 @@ const ColumnCard = (props) => {
       ...note,
       status: isOpenStatus ? NOTE_STATUE.OPEN : NOTE_STATUE.CLOSED,
     }).then(() => {
-      enqueueSnackbar("You changed a note status!", {
+      enqueueSnackbar(t("ColumnCard.Snackbar.handleChangeStatus.text"), {
         autoHideDuration: 3000,
         variant: "info",
       });
@@ -128,11 +130,11 @@ const ColumnCard = (props) => {
           >
             <div className={classes.cardIcon}>
               {isNoteOpenStatus(note.status) ? (
-                <Tooltip title="Open issue">
+                <Tooltip title={t("ColumnCard.Tooltip.AdjustSharpIcon.title")}>
                   <AdjustSharpIcon sx={{ color: "#09b43a" }} />
                 </Tooltip>
               ) : (
-                <Tooltip title="Closed issue">
+                <Tooltip title={t("ColumnCard.Tooltip.AdjustSharpIcon.title")}>
                   <CheckCircleOutlineSharpIcon sx={{ color: "#651fff" }} />
                 </Tooltip>
               )}
@@ -163,8 +165,8 @@ const ColumnCard = (props) => {
         isOpen={isOpenNoteModal}
         onClose={handleCloseNoteModal}
         onSubmit={handleEditNote}
-        buttonText="Update"
-        title={`Edit ${note.name}`}
+        buttonText={t("ColumnCard.NoteModal.buttonText")}
+        title={t("ColumnCard.NoteModal.title", { noteName: note.name })}
         note={note}
       />
     </>
