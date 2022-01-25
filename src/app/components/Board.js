@@ -3,6 +3,7 @@ import loadable from "@loadable/component";
 import clsx from "clsx";
 import Button from "@mui/material/Button";
 import EmptyColumn from "app/components/EmptyColumn";
+import { useParams } from "react-router-dom";
 import { useProject, useColumns } from "app/hooks";
 import { makeStyles } from "@mui/styles";
 import { reorderList, calculateOrder } from "app/helpers";
@@ -42,9 +43,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Home(props) {
-  // hard cord for now until we have a page for projects
-  const projectId = "61ee1ff439ca014e678bae14";
+function Board(props) {
+  const { projectId } = useParams();
   const [
     { columnOrder, noteOrders },
     { fetchProject, reorderColumns, reorderNotes },
@@ -76,8 +76,8 @@ function Home(props) {
   };
 
   useEffect(() => {
-    // hard cord for now until we have a page for projects
     fetchProject(projectId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onDragEnd = (result) => {
@@ -166,4 +166,4 @@ function Home(props) {
   );
 }
 
-export default Home;
+export default Board;

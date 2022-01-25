@@ -1,5 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getProject, postNotesReorder, postColumnsReorder } from "app/apis";
+import {
+  getProjects,
+  getProject,
+  postNotesReorder,
+  postColumnsReorder,
+} from "app/apis";
 import { extraReducers as columnExtraReducers } from "app/slices/columns";
 import { extraReducers as noteExtraReducers } from "app/slices/notes";
 
@@ -14,6 +19,14 @@ export const projectState = {
     // }
   },
 };
+
+export const fetchProjects = createAsyncThunk(
+  "project/fetchProjects",
+  async (projectId) => {
+    const resp = await getProjects();
+    return resp.data;
+  }
+);
 
 export const fetchProject = createAsyncThunk(
   "project/fetchProject",
@@ -75,6 +88,13 @@ export const projectSlice = createSlice({
   extraReducers: {
     ...columnExtraReducers,
     ...noteExtraReducers,
+    [fetchProjects.fulfilled.type]: (state, action) => {
+      const { projectList } = action.payload;
+      return {
+        ...state,
+        projectList,
+      };
+    },
     [fetchProject.fulfilled.type]: (state, action) => {
       const { id, notes, noteOrders, columns, columnOrder } = action.payload;
       return {

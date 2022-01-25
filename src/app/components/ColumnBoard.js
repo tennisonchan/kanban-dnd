@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import loadable from "@loadable/component";
 import { makeStyles } from "@mui/styles";
 import {
-  useProject,
   useColumns,
   useNotes,
   getColumnById,

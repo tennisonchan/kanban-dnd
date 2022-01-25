@@ -6,11 +6,11 @@ const Note = require("../models/note");
 
 exports.projects_read = function (req, res, next) {
   console.log("projects_read");
-  Project.find({}, "name").exec(function (err, projects) {
+  Project.find({}, "id name").exec(function (err, projects) {
     if (err) {
       return next(err);
     }
-    res.json({ projects });
+    res.json({ projectList: projects });
   });
 };
 

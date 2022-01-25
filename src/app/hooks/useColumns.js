@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { projectActions } from "app/slices/projects";
 import { createColumn, updateColumn, removeColumn } from "app/slices/columns";
 import { getProjectById } from "app/hooks";
 

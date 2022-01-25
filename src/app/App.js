@@ -1,6 +1,7 @@
 import React from "react";
 import { Suspense } from "react";
-import Home from "app/components/Home";
+import Board from "app/components/Board";
+import ProjectsPage from "app/components/ProjectsPage";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -54,8 +55,9 @@ function App() {
           <CssBaseline />
           <Suspense fallback={<Loading />}>
             <Routes>
-              <Route exact path="/" element={<Home />} />
-              <Route path="*" element={<Navigate to="/" />} />
+              <Route exact path="/projects" element={<ProjectsPage />} />
+              <Route path="/projects/:projectId" element={<Board />} />
+              <Route path="*" element={<Navigate to="/projects" />} />
             </Routes>
           </Suspense>
         </ThemeProvider>
