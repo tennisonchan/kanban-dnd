@@ -31,9 +31,7 @@ exports.project_read = function (req, res, next) {
       },
     },
     function (err, results) {
-      if (err) {
-        return next(err);
-      }
+      if (err || !results.project) return next(err);
 
       const { project } = results;
       const { columnOrder, noteOrders } = project;

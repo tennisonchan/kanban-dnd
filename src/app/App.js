@@ -2,6 +2,7 @@ import React from "react";
 import { Suspense } from "react";
 import Board from "app/components/Board";
 import ProjectsPage from "app/components/ProjectsPage";
+import NotFound from "app/components/NotFound";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -57,7 +58,9 @@ function App() {
             <Routes>
               <Route exact path="/projects" element={<ProjectsPage />} />
               <Route path="/projects/:projectId" element={<Board />} />
-              <Route path="*" element={<Navigate to="/projects" />} />
+              <Route path="/" element={<Navigate to="/projects" />} />
+              <Route path="/oops" element={<NotFound />} />
+              <Route path="*" element={<Navigate to="/oops" />} />
             </Routes>
           </Suspense>
         </ThemeProvider>

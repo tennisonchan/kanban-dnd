@@ -37,7 +37,7 @@ export function useProject(projectId) {
         return dispatch(reorderNotes({ noteOrders, projectId }));
       },
       fetchProject: function (projectId) {
-        dispatch(fetchProject(projectId));
+        return dispatch(fetchProject(projectId));
       },
     },
   ];

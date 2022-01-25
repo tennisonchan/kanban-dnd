@@ -27,7 +27,7 @@ const ProjectPage = (props) => {
     <Box sx={{ padding: "24px" }}>
       <Container>
         {projectList.map((project) => (
-          <Card sx={{ maxWidth: 345 }}>
+          <Card key={project.id} sx={{ maxWidth: 345 }}>
             <CardActionArea onClick={() => handleClickOnPage(project.id)}>
               <CardMedia
                 component="img"

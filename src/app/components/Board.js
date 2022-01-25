@@ -3,13 +3,13 @@ import loadable from "@loadable/component";
 import clsx from "clsx";
 import Button from "@mui/material/Button";
 import EmptyColumn from "app/components/EmptyColumn";
-import { useParams } from "react-router-dom";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useNavigate, useParams } from "react-router-dom";
 import { useProject, useColumns } from "app/hooks";
 import { makeStyles } from "@mui/styles";
 import { reorderList, calculateOrder } from "app/helpers";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useSnackbar } from "notistack-v5";
-import useMediaQuery from "@mui/material/useMediaQuery";
 
 const ColumnModal = loadable(() => import("app/components/ColumnModal"));
 const ColumnBoard = loadable(() => import("app/components/ColumnBoard"));
@@ -44,9 +44,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Board(props) {
+  const navigate = useNavigate();
   const { projectId } = useParams();
   const [
-    { columnOrder, noteOrders },
+    { columnOrder = [], noteOrders = {} },
     { fetchProject, reorderColumns, reorderNotes },
   ] = useProject(projectId);
   const [, { addColumn }] = useColumns(projectId);
@@ -76,7 +77,14 @@ function Board(props) {
   };
 
   useEffect(() => {
-    fetchProject(projectId);
+    fetchProject(projectId).then(({ error }) => {
+      if (error) {
+        navigate("/oops");
+        enqueueSnackbar(error.message, {
+          variant: "error",
+        });
+      }
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -106,63 +114,59 @@ function Board(props) {
   };
 
   return (
-    <>
-      <div
-        className={clsx(
-          classes.columnsContainer,
-          isMediaQueryBreakPoint && classes.columnContainerMediaQuery
-        )}
-      >
-        {isNoColumns && <EmptyColumn onSubmit={handleCreateColumn} />}
-        {!isNoColumns && (
-          <>
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable
-                droppableId="columns"
-                type="COLUMN"
-                direction={isMediaQueryBreakPoint ? "vertical" : "horizontal"}
-              >
-                {(provided) => (
-                  <div
-                    ref={provided.innerRef}
-                    className={clsx(
-                      classes.columnsBoards,
-                      isMediaQueryBreakPoint && classes.columnsBoardsMediaQuery
-                    )}
-                  >
-                    {columnOrder.map((columnId, index) => {
-                      return (
-                        <ColumnBoard
-                          key={columnId}
-                          projectId={projectId}
-                          columnId={columnId}
-                          index={index}
-                        />
-                      );
-                    })}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext>
-            <div>
-              <Button onClick={handleOpen} className={classes.newColumnButton}>
-                <span className={classes.newColumnButtonText}>
-                  + Add column
-                </span>
-              </Button>
-              <ColumnModal
-                title="Add a column"
-                isOpen={isOpen}
-                onClose={handleClose}
-                onSubmit={handleCreateColumn}
-                buttonText="Create column"
-              />
-            </div>
-          </>
-        )}
-      </div>
-    </>
+    <div
+      className={clsx(
+        classes.columnsContainer,
+        isMediaQueryBreakPoint && classes.columnContainerMediaQuery
+      )}
+    >
+      {isNoColumns && <EmptyColumn onSubmit={handleCreateColumn} />}
+      {!isNoColumns && (
+        <>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable
+              droppableId="columns"
+              type="COLUMN"
+              direction={isMediaQueryBreakPoint ? "vertical" : "horizontal"}
+            >
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  className={clsx(
+                    classes.columnsBoards,
+                    isMediaQueryBreakPoint && classes.columnsBoardsMediaQuery
+                  )}
+                >
+                  {columnOrder.map((columnId, index) => {
+                    return (
+                      <ColumnBoard
+                        key={columnId}
+                        projectId={projectId}
+                        columnId={columnId}
+                        index={index}
+                      />
+                    );
+                  })}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+          <div>
+            <Button onClick={handleOpen} className={classes.newColumnButton}>
+              <span className={classes.newColumnButtonText}>+ Add column</span>
+            </Button>
+            <ColumnModal
+              title="Add a column"
+              isOpen={isOpen}
+              onClose={handleClose}
+              onSubmit={handleCreateColumn}
+              buttonText="Create column"
+            />
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 
