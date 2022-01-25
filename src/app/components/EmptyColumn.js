@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import loadable from "@loadable/component";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
+import { useTranslation } from "react-i18next";
 
 const ColumnModal = loadable(() => import("app/components/ColumnModal"));
 
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 const EmptyColumn = (props) => {
   const { onSubmit } = props;
   const classes = useStyles();
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {
@@ -35,17 +37,17 @@ const EmptyColumn = (props) => {
 
   return (
     <div className={classes.emptyColumn}>
-      <h2>This project doesn’t have any columns or cards.</h2>
+      <h2>{t("EmptyColumn.emptyColumn.h2")}</h2>
       <div>
         <Button variant="contained" onClick={handleOpen}>
-          Add a column
+          {t("EmptyColumn.Button.text")}
         </Button>
         <ColumnModal
           isOpen={isOpen}
           onClose={handleClose}
           onSubmit={handleCreateColumn}
-          buttonText="Create column"
-          title="Add a column"
+          buttonText={t("EmptyColumn.ColumnModal.buttonText")}
+          title={t("EmptyColumn.ColumnModal.title")}
         />
       </div>
     </div>

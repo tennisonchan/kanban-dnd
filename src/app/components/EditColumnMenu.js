@@ -5,9 +5,11 @@ import Menu from "@mui/material/Menu";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
+import { useTranslation } from "react-i18next";
 
 const EditColumnMenu = (props) => {
   const { anchorEl, isOpen, onEdit, onDelete, onClose } = props;
+  const { t } = useTranslation();
 
   const handleEdit = () => {
     onEdit();
@@ -29,11 +31,15 @@ const EditColumnMenu = (props) => {
       >
         <MenuList>
           <MenuItem onClick={handleEdit}>
-            <ListItemText>Edit column</ListItemText>
+            <ListItemText>
+              {t("EditColumnMenu.ListItemText.editColumn")}
+            </ListItemText>
           </MenuItem>
           <Divider />
           <MenuItem onClick={handleDelete}>
-            <ListItemText>Delete column</ListItemText>
+            <ListItemText>
+              {t("EditColumnMenu.ListItemText.deleteColumn")}
+            </ListItemText>
           </MenuItem>
         </MenuList>
       </Menu>

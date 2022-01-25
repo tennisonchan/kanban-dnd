@@ -5,12 +5,14 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
+import { useTranslation } from "react-i18next";
 
 const ColumnModal = (props) => {
+  const { t } = useTranslation();
   const {
-    title = "Add a column",
+    title = t("ColumnModal.title"),
     column = {},
-    buttonText = "Create column",
+    buttonText = t("ColumnModal.buttonText"),
     isOpen,
     onClose,
     onSubmit,
@@ -55,8 +57,8 @@ const ColumnModal = (props) => {
           required
           fullWidth
           id="outlined-required"
-          label="Column name"
-          placeholder="Enter a column name (To Do, In Progress, Done)"
+          label={t("ColumnModal.TextField.label")}
+          placeholder={t("ColumnModal.TextField.placeholder")}
           value={columnName}
           onChange={handleChange}
           autoFocus

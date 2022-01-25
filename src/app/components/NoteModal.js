@@ -6,12 +6,14 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import { useTranslation } from "react-i18next";
 
 const NoteModal = (props) => {
+  const { t } = useTranslation();
   const {
-    title = "Add a note",
+    title = t("NoteModal.default.title"),
     note = {},
-    buttonText = "Create note",
+    buttonText = t("NoteModal.default.buttonText"),
     isOpen,
     onClose,
     onSubmit,
@@ -63,16 +65,16 @@ const NoteModal = (props) => {
           required
           fullWidth
           id="outlined-required"
-          label="Note name"
-          placeholder="Enter a note name"
+          label={t("NoteModal.TextField.noteName.label")}
+          placeholder={t("NoteModal.TextField.noteName.placeholder")}
           value={noteName}
           onChange={handleChange}
           autoFocus
         />
         <Box sx={{ paddingTop: 1 }}>
           <TextField
-            label="Add note description"
-            placeholder="Enter a note description"
+            label={t("NoteModal.TextField.noteContent.label")}
+            placeholder={t("NoteModal.TextField.noteContent.placeholder")}
             multiline
             maxRows={4}
             fullWidth

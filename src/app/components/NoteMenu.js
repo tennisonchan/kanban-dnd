@@ -6,6 +6,7 @@ import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import { isNoteOpenStatus } from "app/helpers";
+import { useTranslation } from "react-i18next";
 
 const NoteMenu = (props) => {
   const {
@@ -18,6 +19,7 @@ const NoteMenu = (props) => {
     onClose,
     onArchive,
   } = props;
+  const { t } = useTranslation();
   const isOpenStatus = isNoteOpenStatus(noteStatus);
 
   const handleEdit = () => {
@@ -50,21 +52,31 @@ const NoteMenu = (props) => {
       >
         <MenuList>
           <MenuItem onClick={handleEdit}>
-            <ListItemText>Edit note</ListItemText>
+            <ListItemText>
+              {t("NoteMenu.ListItemText.editNote.text")}
+            </ListItemText>
           </MenuItem>
           <MenuItem onClick={handleToggleStatus}>
             {isOpenStatus ? (
-              <ListItemText>Close issue</ListItemText>
+              <ListItemText>
+                {t("NoteMenu.ListItemText.closeIssue.text")}
+              </ListItemText>
             ) : (
-              <ListItemText>Reopen issue</ListItemText>
+              <ListItemText>
+                {t("NoteMenu.ListItemText.reopenIssue.text")}
+              </ListItemText>
             )}
           </MenuItem>
           <Divider />
           <MenuItem onClick={handleArchive}>
-            <ListItemText>Archive note</ListItemText>
+            <ListItemText>
+              {t("NoteMenu.ListItemText.archiveNote.text")}
+            </ListItemText>
           </MenuItem>
           <MenuItem onClick={handleDelete}>
-            <ListItemText>Delete note</ListItemText>
+            <ListItemText>
+              {t("NoteMenu.ListItemText.deleteNote.text")}
+            </ListItemText>
           </MenuItem>
         </MenuList>
       </Menu>
