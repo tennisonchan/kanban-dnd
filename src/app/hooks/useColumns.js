@@ -1,68 +1,30 @@
 import { useDispatch, useSelector } from "react-redux";
-import {
-  columnActions,
-  getColumnsSelector,
-  getColumnOrder,
-  getColumnById,
-  fetchColumns,
-  updateColumns,
-  createColumnTemplate,
-} from "app/slices/columns";
+import { projectActions } from "app/slices/projects";
+import { createColumn, updateColumn, removeColumn } from "app/slices/columns";
+import { getProjectById } from "app/hooks";
 
-const { reorderColumns } = columnActions;
+export const getColumns = (state, projectId) =>
+  getProjectById(state, projectId)?.columns;
 
-function useColumns() {
+export const getColumnById = (state, projectId, columnId) =>
+  getColumns(state, projectId)?.[columnId];
+
+export function useColumns(projectId) {
   const dispatch = useDispatch();
-  const columns = useSelector(getColumnsSelector);
-  const columnOrder = useSelector(getColumnOrder);
+  const columns = useSelector((state) => getColumns(state, projectId)) || {};
 
   return [
-    { columns, columnOrder },
+    { columns },
     {
-      addColumn: function (payload) {
-        const column = createColumnTemplate(payload);
-        return dispatch(
-          updateColumns({
-            columns: {
-              ...columns,
-              [column.id]: column,
-            },
-            columnOrder: [...columnOrder, column.id],
-          })
-        );
+      addColumn: function (column) {
+        return dispatch(createColumn({ ...column, projectId }));
       },
       editColumn: function (column) {
-        return dispatch(
-          updateColumns({
-            columns: {
-              ...columns,
-              [column.id]: column,
-            },
-            columnOrder,
-          })
-        );
+        return dispatch(updateColumn(column));
       },
-      reorderColumns: function (columnOrder) {
-        dispatch(reorderColumns({ columnOrder }));
-        return dispatch(updateColumns({ columns, columnOrder }));
+      removeColumn: function (id) {
+        return dispatch(removeColumn(id));
       },
-      removeColumn: function (removeId) {
-        const newColumnOrder = columnOrder.filter((id) => id !== removeId);
-        return dispatch(
-          updateColumns({
-            columnOrder: newColumnOrder,
-            columns: newColumnOrder.reduce(
-              (acc, id) => ({ ...acc, [id]: columns[id] }),
-              {}
-            ),
-          })
-        );
-      },
-      fetchColumns: function () {
-        dispatch(fetchColumns());
-      },
-      getColumnById,
-      getColumnOrder,
     },
   ];
 }

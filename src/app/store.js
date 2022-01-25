@@ -1,11 +1,9 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import { columnSlice } from "app/slices/columns";
-import { noteSlice } from "app/slices/notes";
+import { projectSlice } from "app/slices/projects";
 
 export const store = configureStore({
   reducer: {
-    [columnSlice.name]: columnSlice.reducer,
-    [noteSlice.name]: noteSlice.reducer,
+    [projectSlice.name]: projectSlice.reducer,
   },
   devTools: true,
   middleware: [...getDefaultMiddleware()],

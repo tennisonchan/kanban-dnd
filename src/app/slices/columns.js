@@ -1,77 +1,86 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { v4 as uuid } from "uuid";
-import { getColumns, putColumns } from "app/apis";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { postColumn, patchColumn, deleteColumn } from "app/apis";
 
-export const columnState = {
-  columns: {},
-  columnOrder: [],
-  isLoading: false,
-};
-
-export const fetchColumns = createAsyncThunk(
-  "columns/fetchColumns",
-  async () => {
-    const resp = await getColumns();
+export const createColumn = createAsyncThunk(
+  "column/createColumn",
+  async (payload) => {
+    const resp = await postColumn(payload);
     return resp.data;
   }
 );
 
-export const updateColumns = createAsyncThunk(
-  "columns/updateColumns",
+export const updateColumn = createAsyncThunk(
+  "column/updateColumn",
   async (payload) => {
-    const resp = await putColumns(payload);
-    return resp.data.data; // why data.data? json bin issue
+    const resp = await patchColumn(payload);
+    return resp.data;
   }
 );
 
-export const createColumnTemplate = (column) => ({
-  id: uuid(),
-  createdAt: Date.now(), // should be handled in backend
-  ...column,
-  updatedAt: Date.now(), // should be handled in backend
-});
+export const removeColumn = createAsyncThunk(
+  "column/removeColumn",
+  async (payload) => {
+    const resp = await deleteColumn(payload);
+    return resp.data;
+  }
+);
 
-export const columnSlice = createSlice({
-  name: "column",
-  initialState: columnState,
-  reducers: {
-    reorderColumns(state, action) {
-      const { columnOrder } = action.payload;
-      return {
-        ...state,
-        columnOrder,
-      };
-    },
+export const extraReducers = {
+  [createColumn.fulfilled.type]: (state, action) => {
+    const { column, columnOrder } = action.payload;
+    const projectId = column.project;
+    const project = state.projects[projectId];
+    return {
+      ...state,
+      projects: {
+        ...state.projects,
+        [projectId]: {
+          ...project,
+          columnOrder,
+          columns: {
+            ...project.columns,
+            [column.id]: column,
+          },
+        },
+      },
+    };
   },
-  extraReducers: {
-    [fetchColumns.fulfilled.type]: (state, action) => {
-      const { columns, columnOrder } = action.payload;
-      return {
-        ...state,
-        columns,
-        columnOrder,
-      };
-    },
-    [updateColumns.pending.type]: (state, action) => {
-      return {
-        ...state,
-        isLoading: true,
-      };
-    },
-    [updateColumns.fulfilled.type]: (state, action) => {
-      const { columns, columnOrder } = action.payload;
-      return {
-        ...state,
-        columns,
-        columnOrder,
-        isLoading: false,
-      };
-    },
+  [updateColumn.fulfilled.type]: (state, action) => {
+    const { column } = action.payload;
+    const projectId = column.project;
+    const project = state.projects[projectId];
+    return {
+      ...state,
+      projects: {
+        ...state.projects,
+        [projectId]: {
+          ...project,
+          columns: {
+            ...project.columns,
+            [column.id]: column,
+          },
+        },
+      },
+    };
   },
-});
+  [removeColumn.fulfilled.type]: (state, action) => {
+    const { column, columnOrder, noteOrders } = action.payload;
+    const projectId = column.project;
+    const project = state.projects[projectId];
+    const columns = { ...project.columns };
+    delete columns[column.id];
 
-export const getColumnsSelector = (state) => state[columnSlice.name].columns;
-export const getColumnOrder = (state) => state[columnSlice.name].columnOrder;
-export const getColumnById = (state, id) => getColumnsSelector(state)?.[id];
-
-export const columnActions = columnSlice.actions;
+    return {
+      ...state,
+      projects: {
+        ...state.projects,
+        [projectId]: {
+          ...project,
+          columnOrder,
+          noteOrders,
+          columns,
+        },
+      },
+    };
+  },
+};

@@ -1,69 +1,111 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { v4 as uuid } from "uuid";
-import { getNotes, putNotes } from "app/apis";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { postNote, patchNote, deleteNote, postNoteArchive } from "app/apis";
 
-export const noteState = {
-  notes: {},
-  noteOrders: {},
-};
-
-export const createNoteTemplate = (note) => ({
-  id: uuid(), // should be handled in backend
-  status: 1,
-  archived: false,
-  createdAt: Date.now(), // should be handled in backend
-  ...note,
-  updatedAt: Date.now(), // should be handled in backend
-});
-
-export const fetchNotes = createAsyncThunk("notes/fetchNotes", async () => {
-  const resp = await getNotes();
-  return resp.data;
-});
-
-export const updateNotes = createAsyncThunk(
-  "notes/updateNotes",
+export const createNote = createAsyncThunk(
+  "note/createNote",
   async (payload) => {
-    const resp = await putNotes(payload);
-    return resp.data.data;
+    const resp = await postNote(payload);
+    return resp.data;
   }
 );
 
-export const noteSlice = createSlice({
-  name: "note",
-  initialState: noteState,
-  reducers: {
-    reorderNotes(state, action) {
-      const { noteOrders } = action.payload;
-      return { ...state, noteOrders };
-    },
+export const updateNote = createAsyncThunk(
+  "note/updateNote",
+  async (payload) => {
+    const resp = await patchNote(payload);
+    return resp.data;
+  }
+);
+
+export const removeNote = createAsyncThunk(
+  "note/removeNote",
+  async (payload) => {
+    const resp = await deleteNote(payload);
+    return resp.data;
+  }
+);
+
+export const archiveNote = createAsyncThunk(
+  "note/archiveNote",
+  async (payload) => {
+    const resp = await postNoteArchive(payload);
+    return resp.data;
+  }
+);
+
+export const extraReducers = {
+  [createNote.fulfilled.type]: (state, action) => {
+    const { note, noteOrders } = action.payload;
+    const projectId = note.project;
+    const project = state.projects[projectId];
+    return {
+      ...state,
+      projects: {
+        ...state.projects,
+        [projectId]: {
+          ...project,
+          noteOrders,
+          notes: {
+            ...project.notes,
+            [note.id]: note,
+          },
+        },
+      },
+    };
   },
-  extraReducers: {
-    [fetchNotes.fulfilled.type]: (state, action) => {
-      const { notes, noteOrders } = action.payload;
-      return {
-        ...state,
-        notes,
-        noteOrders,
-      };
-    },
-    [updateNotes.fulfilled.type]: (state, action) => {
-      const { notes, noteOrders } = action.payload;
-      return {
-        ...state,
-        notes,
-        noteOrders,
-      };
-    },
+  [updateNote.fulfilled.type]: (state, action) => {
+    const { note } = action.payload;
+    const projectId = note.project;
+    const project = state.projects[projectId];
+    return {
+      ...state,
+      projects: {
+        ...state.projects,
+        [projectId]: {
+          ...project,
+          notes: {
+            ...project.notes,
+            [note.id]: note,
+          },
+        },
+      },
+    };
   },
-});
-
-const getNoteState = (state) => state[noteSlice.name];
-export const getNotesSelector = (state) => getNoteState(state).notes;
-export const getNoteOrders = (state) => getNoteState(state).noteOrders;
-export const getNoteOrderByColumnId = (state, columnId) =>
-  getNoteOrders(state)?.[columnId];
-
-export const getNoteById = (state, id) => getNotes(state)?.[id];
-
-export const noteActions = noteSlice.actions;
+  [removeNote.fulfilled.type]: (state, action) => {
+    const { note, noteOrders } = action.payload;
+    const projectId = note.project;
+    const project = state.projects[projectId];
+    const notes = { ...project.notes };
+    delete notes[note.id];
+    return {
+      ...state,
+      projects: {
+        ...state.projects,
+        [projectId]: {
+          ...project,
+          noteOrders,
+          notes,
+        },
+      },
+    };
+  },
+  [archiveNote.fulfilled.type]: (state, action) => {
+    const { note, noteOrders } = action.payload;
+    const projectId = note.project;
+    const project = state.projects[projectId];
+    return {
+      ...state,
+      projects: {
+        ...state.projects,
+        [projectId]: {
+          ...project,
+          noteOrders,
+          notes: {
+            ...project.notes,
+            [note.id]: note,
+          },
+        },
+      },
+    };
+  },
+};

@@ -1,24 +1,51 @@
 import axios from "axios";
 
-const BASE_URL = "https://api.jsonbin.io";
-const COLUMNS_BIN_ID = "61ea80db3282972ff67ffaf2";
-const NOTES_BIN_ID = "61ea990da785682f9719f4ab";
+const PORT = 3001;
+const BASE_URL = `http://localhost:${PORT}`;
 const config = {
   headers: {
-    "secret-key": process.env.REACT_APP_SECRET_KEY,
-    "content-Type": "application/json",
+    "Content-Type": "application/json;charset=utf-8",
+    "Access-Control-Allow-Origin": "*",
   },
 };
 
-export const getColumns = () =>
-  axios.get(`${BASE_URL}/b/${COLUMNS_BIN_ID}/latest`, config);
+export const getProjects = () => axios.get(`${BASE_URL}/projects`, config);
 
-export const putColumns = (payload) =>
-  // cannot use patch for json bin ...
-  axios.put(`${BASE_URL}/b/${COLUMNS_BIN_ID}/`, payload, config);
+export const getProject = (projectId) =>
+  axios.get(`${BASE_URL}/projects/${projectId}`, config);
 
-export const getNotes = () =>
-  axios.get(`${BASE_URL}/b/${NOTES_BIN_ID}/latest`, config);
+export const postProject = (payload) =>
+  axios.post(`${BASE_URL}/project/`, payload, config);
 
-export const putNotes = (payload) =>
-  axios.put(`${BASE_URL}/b/${NOTES_BIN_ID}/`, payload, config);
+export const patchProject = (payload) =>
+  axios.patch(`${BASE_URL}/project/`, payload, config);
+
+export const deleteProject = (payload) =>
+  axios.delete(`${BASE_URL}/project/`, payload, config);
+
+export const postColumn = (payload) =>
+  axios.post(`${BASE_URL}/column`, payload, config);
+
+export const patchColumn = (payload) =>
+  axios.patch(`${BASE_URL}/column`, payload, config);
+
+export const deleteColumn = (columnId) =>
+  axios.delete(`${BASE_URL}/columns/${columnId}`, config);
+
+export const postColumnsReorder = (payload) =>
+  axios.post(`${BASE_URL}/columns/reorder`, payload, config);
+
+export const postNote = (payload) =>
+  axios.post(`${BASE_URL}/note`, payload, config);
+
+export const patchNote = (payload) =>
+  axios.patch(`${BASE_URL}/note`, payload, config);
+
+export const deleteNote = ({ noteId, columnId }) =>
+  axios.delete(`${BASE_URL}/columns/${columnId}/notes/${noteId}`, config);
+
+export const postNoteArchive = (payload) =>
+  axios.post(`${BASE_URL}/note/archive`, payload, config);
+
+export const postNotesReorder = (payload) =>
+  axios.post(`${BASE_URL}/notes/reorder`, payload, config);
