@@ -8,19 +8,61 @@ This is a Kanban board that support drag-and-drop!
 
 ![mlIbYKu0IU](https://user-images.githubusercontent.com/719938/150601282-b8d196b4-64c3-4f38-a952-02344c9618f3.gif)
 
-## Columns - Support features
+## Required features
 
-- Add column with name
-- Change column name
-- Remove column
-- Drag and drop columns
-- Show notification on columns CRUD actions
+- [x] React
+- [x] Built with SPA (Single Page Application)
+- [x] Boilerplate, UI Kit can be customized according to your preference.
 
-## Notes - Support features
+### Model: Column
 
-- Add note to the column with name and content
-- Edit the note details
-- Indicate the note status of open or closed
-- Drag and drop the card across columns
-- Archive card
-- Show notification on note CRUD actions
+- [x] Required fields: Name, Order
+
+### Model: Card
+
+- [x] Required fields: Name, Description, Created date, Status(Open, Closed), Order
+
+### User Stories
+
+- [x] User can add column with name
+- [x] User can modify column name
+- [x] User can delete empty column
+- [x] User can move columns by drag & drop
+- [x] User can add card to column with name and description
+- [x] User can modify card details
+- [x] User can identify / switch status of card
+- [x] User can move / order card by drag & drop
+- [x] User can archive card
+
+## Advanced features
+
+- [ ] Test codes
+- [ ] Graceful error handling
+
+### Structure
+
+- [x] Multiple boards
+- [ ] More fields such as author, labels, assignee, comments, protected
+- [x] i18n feature
+
+### PWA
+
+- [ ] Add to Homescreen with an icon
+- [x] Persistent storage (by any method) to preserve state after refresh
+- [x] Push notification when a new card created
+
+### Performance
+
+- [ ] Windowing list (react-window, react-virtualized) when rendering lots of cards
+- [x] Code splitting and lazy loading
+
+### Design
+
+- [x] RWD(Responsive Web Design) for desktop/mobile
+- [x] Show description when list is empty
+- [x] 404 Page if url is not valid
+
+### UX
+
+- [ ] Auto focus on initial state
+- [ ] Input Validation
