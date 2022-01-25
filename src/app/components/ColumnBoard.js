@@ -1,7 +1,13 @@
 import React, { useState, useRef } from "react";
 import loadable from "@loadable/component";
 import { makeStyles } from "@mui/styles";
-import { useColumns, useNotes } from "app/hooks";
+import {
+  useProject,
+  useColumns,
+  useNotes,
+  getColumnById,
+  getNoteOrderByColumnId,
+} from "app/hooks";
 import { useSelector } from "react-redux";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { useSnackbar } from "notistack-v5";
@@ -41,12 +47,15 @@ const useStyles = makeStyles((theme) => ({
 
 const ColumnBoard = (props) => {
   const classes = useStyles();
-  const { columnId, index } = props;
-  const [, { removeColumn, editColumn, getColumnById }] = useColumns();
-  const [{ notes }, { addNote, getNoteOrderByColumnId }] = useNotes();
-  const column = useSelector((state) => getColumnById(state, columnId));
+  const { projectId, columnId, index } = props;
+  const [{ notes }, { addNote }] = useNotes(projectId, columnId);
+  const [, { removeColumn, editColumn }] = useColumns(projectId);
+  const column = useSelector((state) =>
+    getColumnById(state, projectId, columnId)
+  );
+
   const noteOrder = useSelector((state) =>
-    getNoteOrderByColumnId(state, columnId)
+    getNoteOrderByColumnId(state, projectId, columnId)
   );
   const [isOpenNoteModal, setIsOpenNoteModal] = useState(false);
   const noteCount = noteOrder?.length || 0;
@@ -80,7 +89,7 @@ const ColumnBoard = (props) => {
   };
   const handleDeleteColumn = () => {
     removeColumn(columnId).then(() => {
-      enqueueSnackbar("You added a new note!", {
+      enqueueSnackbar("You removed a note!", {
         autoHideDuration: 3000,
         variant: "info",
       });
@@ -154,6 +163,7 @@ const ColumnBoard = (props) => {
                   <ColumnCard
                     key={noteId}
                     index={index}
+                    projectId={projectId}
                     note={notes[noteId]}
                     columnId={columnId}
                   />

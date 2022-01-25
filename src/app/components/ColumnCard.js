@@ -52,10 +52,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ColumnCard = (props) => {
+  const { note, columnId, index, projectId } = props;
   const classes = useStyles();
   const [isOpenNoteModal, setIsOpenNoteModal] = useState(false);
-  const [, { editNote, removeNote, archiveNote }] = useNotes();
-  const { note, columnId, index } = props;
+  const [, { editNote, removeNote, archiveNote }] = useNotes(
+    projectId,
+    columnId
+  );
   const anchor = useRef(null);
   const [isOpenNoteMenu, setIsOpenNoteMenu] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -85,7 +88,7 @@ const ColumnCard = (props) => {
     setIsOpenNoteMenu(false);
   };
   const handleDeleteNote = () => {
-    removeNote(note.id, columnId).then(() => {
+    removeNote(note.id).then(() => {
       enqueueSnackbar("You removed a note!", {
         autoHideDuration: 3000,
         variant: "info",
@@ -93,7 +96,7 @@ const ColumnCard = (props) => {
     });
   };
   const handleArchiveMenu = () => {
-    archiveNote(note.id, columnId).then(() => {
+    archiveNote(note.id).then(() => {
       enqueueSnackbar("You archived a note!", {
         autoHideDuration: 3000,
         variant: "info",

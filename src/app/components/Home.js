@@ -3,7 +3,7 @@ import loadable from "@loadable/component";
 import clsx from "clsx";
 import Button from "@mui/material/Button";
 import EmptyColumn from "app/components/EmptyColumn";
-import { useColumns, useNotes } from "app/hooks";
+import { useProject, useColumns } from "app/hooks";
 import { makeStyles } from "@mui/styles";
 import { reorderList, calculateOrder } from "app/helpers";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -43,9 +43,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Home(props) {
-  const [{ columnOrder = [] }, { addColumn, reorderColumns, fetchColumns }] =
-    useColumns();
-  const [{ noteOrders }, { reorderNotes, fetchNotes }] = useNotes();
+  // hard cord for now until we have a page for projects
+  const projectId = "61ee1ff439ca014e678bae14";
+  const [
+    { columnOrder, noteOrders },
+    { fetchProject, reorderColumns, reorderNotes },
+  ] = useProject(projectId);
+  const [, { addColumn }] = useColumns(projectId);
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const isNoColumns = !columnOrder.length;
@@ -72,8 +76,8 @@ function Home(props) {
   };
 
   useEffect(() => {
-    fetchColumns();
-    fetchNotes();
+    // hard cord for now until we have a page for projects
+    fetchProject(projectId);
   }, []);
 
   const onDragEnd = (result) => {
@@ -130,6 +134,7 @@ function Home(props) {
                       return (
                         <ColumnBoard
                           key={columnId}
+                          projectId={projectId}
                           columnId={columnId}
                           index={index}
                         />

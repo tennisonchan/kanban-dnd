@@ -32,7 +32,6 @@ const ColumnModal = (props) => {
   const handleKeyPress = (event) => {
     if (event.charCode === 13) {
       event.preventDefault();
-      console.log("value", event.target.value);
       onSubmit({ ...column, name: columnName });
     }
   };

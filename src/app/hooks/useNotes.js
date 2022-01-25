@@ -1,90 +1,37 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-  noteActions,
-  getNotesSelector,
-  getNoteOrders,
-  getNoteOrderByColumnId,
-  getNoteById,
-  fetchNotes,
-  updateNotes,
-  createNoteTemplate,
+  createNote,
+  updateNote,
+  removeNote,
+  archiveNote,
 } from "app/slices/notes";
+import { getProjectById } from "app/hooks";
 
-const { reorderNotes } = noteActions;
+export const getNotesSelector = (state, projectId) =>
+  getProjectById(state, projectId).notes;
+export const getNoteById = (state, projectId, noteId) =>
+  getNotesSelector(state, projectId)?.[noteId];
 
-function useNotes() {
+export function useNotes(projectId, columnId) {
   const dispatch = useDispatch();
-  const notes = useSelector(getNotesSelector);
-  const noteOrders = useSelector(getNoteOrders);
+  const notes =
+    useSelector((state) => getNotesSelector(state, projectId)) || {};
 
   return [
-    { notes, noteOrders },
+    { notes },
     {
-      addNote: function (newNote, columnId) {
-        const note = createNoteTemplate(newNote);
-        const noteOrder = noteOrders[columnId] || [];
-        return dispatch(
-          updateNotes({
-            noteOrders: {
-              ...noteOrders,
-              [columnId]: [note.id, ...noteOrder],
-            },
-            notes: { ...notes, [note.id]: note },
-          })
-        );
+      addNote: function (newNote) {
+        return dispatch(createNote({ ...newNote, projectId, columnId }));
       },
-      editNote: function (note) {
-        return dispatch(
-          updateNotes({
-            notes: { ...notes, [note.id]: note },
-            noteOrders,
-          })
-        );
+      editNote: function (updatedNote) {
+        return dispatch(updateNote({ ...updatedNote, projectId, columnId }));
       },
-      removeNote: function (removeId, columnId) {
-        const noteOrder = noteOrders[columnId].filter((id) => id !== removeId);
-        return dispatch(
-          updateNotes({
-            noteOrders: {
-              ...noteOrders,
-              [columnId]: noteOrder,
-            },
-            notes: {
-              ...notes,
-              [removeId]: null,
-            },
-          })
-        );
+      removeNote: function (noteId) {
+        return dispatch(removeNote({ noteId, columnId }));
       },
-      reorderNotes: function (noteOrders) {
-        dispatch(reorderNotes({ noteOrders }));
-        dispatch(updateNotes({ notes, noteOrders }));
+      archiveNote: function (noteId) {
+        return dispatch(archiveNote({ noteId, projectId, columnId }));
       },
-      archiveNote: function (archiveId, columnId) {
-        const noteOrder = noteOrders[columnId].filter((id) => id !== archiveId);
-        return dispatch(
-          updateNotes({
-            noteOrders: {
-              ...noteOrders,
-              [columnId]: noteOrder,
-            },
-            notes: {
-              ...notes,
-              [archiveId]: {
-                ...notes[archiveId],
-                archived: true,
-              },
-            },
-          })
-        );
-      },
-      fetchNotes: function () {
-        dispatch(fetchNotes());
-      },
-      getNoteOrderByColumnId,
-      getNoteById,
-      getNotesSelector,
-      getNoteOrders,
     },
   ];
 }
