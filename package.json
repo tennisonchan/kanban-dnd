@@ -13,8 +13,13 @@
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "async": "^3.2.3",
     "axios": "^0.25.0",
     "clsx": "^1.1.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^14.2.0",
+    "mongoose": "^6.1.7",
     "notistack-v5": "^1.0.1",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
@@ -39,6 +44,8 @@
     "workbox-streams": "^5.1.4"
   },
   "scripts": {
+    "server:start": "node ./server/bin/www",
+    "server:dev": "nodemon ./server/bin/www",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -61,5 +68,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }

@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "1": {
+      "id": "1",
+      "name": "column 1"
+    },
+    "2": {
+      "id": "2",
+      "name": "column 2"
+    }
+  },
+  "columnOrder": ["1", "2"]
+}
