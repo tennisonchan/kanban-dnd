@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import loadable from "@loadable/component";
 import clsx from "clsx";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import EmptyColumn from "app/components/EmptyColumn";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate, useParams } from "react-router-dom";
@@ -18,6 +19,8 @@ const ColumnBoard = loadable(() => import("app/components/ColumnBoard"));
 const useStyles = makeStyles((theme) => ({
   columnsBoards: {
     display: "flex",
+    justifyContent: "center",
+    height: "fit-content",
   },
   columnsBoardsMediaQuery: {
     flexWrap: "wrap",
@@ -25,9 +28,18 @@ const useStyles = makeStyles((theme) => ({
   columnsContainer: {
     display: "flex",
     padding: theme.spacing(2),
+    overflow: "auto",
+    height: "calc(100vh - 64px)",
   },
   columnContainerMediaQuery: {
     flexDirection: "column",
+  },
+  newColumnButtonWrap: {
+    marginLeft: theme.spacing(1),
+  },
+  newColumnButtonWrapMediaQuery: {
+    display: "flex",
+    justifyContent: "center",
   },
   newColumnButton: {
     padding: "0 !important",
@@ -154,7 +166,12 @@ function Board(props) {
               )}
             </Droppable>
           </DragDropContext>
-          <div>
+          <Box
+            className={clsx(
+              classes.newColumnButtonWrap,
+              isMediaQueryBreakPoint && classes.newColumnButtonWrapMediaQuery
+            )}
+          >
             <Button onClick={handleOpen} className={classes.newColumnButton}>
               <span className={classes.newColumnButtonText}>
                 {t("Board.Button.newColumnButtonText")}
@@ -167,7 +184,7 @@ function Board(props) {
               onSubmit={handleCreateColumn}
               buttonText={t("Board.ColumnModal.buttonText")}
             />
-          </div>
+          </Box>
         </>
       )}
     </div>
