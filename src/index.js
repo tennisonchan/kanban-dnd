@@ -6,15 +6,20 @@ import App from "app/App";
 import { BrowserRouter } from "react-router-dom";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
+import { getChainOptions, WalletProvider } from "@terra-money/wallet-provider";
 
-ReactDOM.render(
-  <BrowserRouter>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </BrowserRouter>,
-  document.getElementById("root")
-);
+getChainOptions().then((chainOptions) => {
+  ReactDOM.render(
+    <BrowserRouter>
+      <React.StrictMode>
+        <WalletProvider {...chainOptions}>
+          <App />
+        </WalletProvider>
+      </React.StrictMode>
+    </BrowserRouter>,
+    document.getElementById("root")
+  );
+});
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

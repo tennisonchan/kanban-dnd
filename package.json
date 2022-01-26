@@ -10,6 +10,8 @@
     "@mui/material": "^5.3.0",
     "@mui/styles": "^5.3.0",
     "@reduxjs/toolkit": "^1.7.1",
+    "@terra-money/terra.js": "^3.0.4",
+    "@terra-money/wallet-provider": "^3.7.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
@@ -50,10 +52,10 @@
   "scripts": {
     "server:start": "node ./server/bin/www",
     "server:dev": "nodemon ./server/bin/www",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": [
@@ -74,6 +76,13 @@
     ]
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "buffer": "^6.0.3",
+    "cross-env": "^7.0.3",
+    "crypto-browserify": "^3.12.0",
+    "nodemon": "^2.0.15",
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.1.11",
+    "stream-browserify": "^3.0.0",
+    "webpack": "^5.67.0"
   }
 }

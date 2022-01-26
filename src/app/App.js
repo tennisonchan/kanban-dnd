@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import Board from "app/components/Board";
 import ProjectsPage from "app/components/ProjectsPage";
 import NotFound from "app/components/NotFound";
+import NavBar from "app/components/NavBar";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -53,7 +54,7 @@ function App() {
     >
       <Provider store={store}>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
+          <NavBar />
           <Suspense fallback={<Loading />}>
             <Routes>
               <Route exact path="/projects" element={<ProjectsPage />} />
@@ -63,6 +64,7 @@ function App() {
               <Route path="*" element={<Navigate to="/oops" />} />
             </Routes>
           </Suspense>
+          <CssBaseline />
         </ThemeProvider>
       </Provider>
     </SnackbarProvider>
