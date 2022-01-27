@@ -12,12 +12,12 @@ export const projectState = {
   projectList: [],
   projects: {
     // [projectId]: {
-    //   columns: {},
     //   columnOrder: [],
-    //   notes: {},
     //   noteOrders: {},
     // }
   },
+  //   columns: {},
+  //   notes: {},
 };
 
 export const fetchProjects = createAsyncThunk(
@@ -99,12 +99,12 @@ export const projectSlice = createSlice({
       const { id, notes, noteOrders, columns, columnOrder } = action.payload;
       return {
         ...state,
+        columns,
+        notes,
         projects: {
           ...state.projects,
           [id]: {
-            notes,
             noteOrders,
-            columns,
             columnOrder,
           },
         },

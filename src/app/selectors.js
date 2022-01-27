@@ -21,13 +21,13 @@ export const selectNoteOrderByColumnId = (state, projectId, columnId) =>
   selectNoteOrders(state, projectId)?.[columnId];
 
 export const selectNotes = (state, projectId) =>
-  selectProjectById(state, projectId).notes;
+  selectProjectSliceState(state)?.notes;
 
 export const selectNoteById = (state, projectId, noteId) =>
   selectNotes(state, projectId)?.[noteId];
 
 export const selectColumns = (state, projectId) =>
-  selectProjectById(state, projectId)?.columns;
+  selectProjectSliceState(state)?.columns;
 
 export const selectColumnById = (state, projectId, columnId) =>
   selectColumns(state, projectId)?.[columnId];

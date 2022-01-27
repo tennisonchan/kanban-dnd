@@ -40,34 +40,26 @@ export const extraReducers = {
     const project = state.projects[projectId];
     return {
       ...state,
+      notes: {
+        ...state.notes,
+        [note.id]: note,
+      },
       projects: {
         ...state.projects,
         [projectId]: {
           ...project,
           noteOrders,
-          notes: {
-            ...project.notes,
-            [note.id]: note,
-          },
         },
       },
     };
   },
   [updateNote.fulfilled.type]: (state, action) => {
     const { note } = action.payload;
-    const projectId = note.project;
-    const project = state.projects[projectId];
     return {
       ...state,
-      projects: {
-        ...state.projects,
-        [projectId]: {
-          ...project,
-          notes: {
-            ...project.notes,
-            [note.id]: note,
-          },
-        },
+      notes: {
+        ...state.notes,
+        [note.id]: note,
       },
     };
   },
@@ -75,16 +67,16 @@ export const extraReducers = {
     const { note, noteOrders } = action.payload;
     const projectId = note.project;
     const project = state.projects[projectId];
-    const notes = { ...project.notes };
+    const notes = { ...state.notes };
     delete notes[note.id];
     return {
       ...state,
+      notes,
       projects: {
         ...state.projects,
         [projectId]: {
           ...project,
           noteOrders,
-          notes,
         },
       },
     };
@@ -95,15 +87,15 @@ export const extraReducers = {
     const project = state.projects[projectId];
     return {
       ...state,
+      notes: {
+        ...state.notes,
+        [note.id]: note,
+      },
       projects: {
         ...state.projects,
         [projectId]: {
           ...project,
           noteOrders,
-          notes: {
-            ...project.notes,
-            [note.id]: note,
-          },
         },
       },
     };

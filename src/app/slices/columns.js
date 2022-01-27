@@ -32,34 +32,26 @@ export const extraReducers = {
     const project = state.projects[projectId];
     return {
       ...state,
+      columns: {
+        ...state.columns,
+        [column.id]: column,
+      },
       projects: {
         ...state.projects,
         [projectId]: {
           ...project,
           columnOrder,
-          columns: {
-            ...project.columns,
-            [column.id]: column,
-          },
         },
       },
     };
   },
   [updateColumn.fulfilled.type]: (state, action) => {
     const { column } = action.payload;
-    const projectId = column.project;
-    const project = state.projects[projectId];
     return {
       ...state,
-      projects: {
-        ...state.projects,
-        [projectId]: {
-          ...project,
-          columns: {
-            ...project.columns,
-            [column.id]: column,
-          },
-        },
+      columns: {
+        ...state.columns,
+        [column.id]: column,
       },
     };
   },
@@ -67,18 +59,18 @@ export const extraReducers = {
     const { column, columnOrder, noteOrders } = action.payload;
     const projectId = column.project;
     const project = state.projects[projectId];
-    const columns = { ...project.columns };
+    const columns = { ...state.columns };
     delete columns[column.id];
 
     return {
       ...state,
+      columns,
       projects: {
         ...state.projects,
         [projectId]: {
           ...project,
           columnOrder,
           noteOrders,
-          columns,
         },
       },
     };
