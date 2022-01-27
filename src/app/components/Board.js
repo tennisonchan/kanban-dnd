@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   columnsBoardsMediaQuery: {
     flexWrap: "wrap",
+    justifyContent: "center",
   },
   columnsContainer: {
     display: "flex",
@@ -31,6 +32,15 @@ const useStyles = makeStyles((theme) => ({
   },
   columnContainerMediaQuery: {
     flexDirection: "column",
+  },
+  newColumnButtonWrapMediaQuery: {
+    justifyContent: "center",
+  },
+  newColumnButtonWrap: {
+    display: "flex",
+    alignItems: "start",
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
   newColumnButton: {
     padding: "0 !important",
@@ -157,7 +167,12 @@ function Board(props) {
               )}
             </Droppable>
           </DragDropContext>
-          <div>
+          <div
+            className={clsx(
+              classes.newColumnButtonWrap,
+              isMediaQueryBreakPoint && classes.newColumnButtonWrapMediaQuery
+            )}
+          >
             <Button onClick={handleOpen} className={classes.newColumnButton}>
               <span className={classes.newColumnButtonText}>
                 {t("Board.Button.newColumnButtonText")}
