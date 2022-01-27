@@ -1,12 +1,8 @@
 import React, { useState, useRef } from "react";
 import loadable from "@loadable/component";
 import { makeStyles } from "@mui/styles";
-import {
-  useColumns,
-  useNotes,
-  getColumnById,
-  getNoteOrderByColumnId,
-} from "app/hooks";
+import { useColumns, useNotes } from "app/hooks";
+import { selectColumnById, selectNoteOrderByColumnId } from "app/selectors";
 import { useSelector } from "react-redux";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { useSnackbar } from "notistack-v5";
@@ -52,11 +48,10 @@ const ColumnBoard = (props) => {
   const [{ notes }, { addNote }] = useNotes(projectId, columnId);
   const [, { removeColumn, editColumn }] = useColumns(projectId);
   const column = useSelector((state) =>
-    getColumnById(state, projectId, columnId)
+    selectColumnById(state, projectId, columnId)
   );
-
   const noteOrder = useSelector((state) =>
-    getNoteOrderByColumnId(state, projectId, columnId)
+    selectNoteOrderByColumnId(state, projectId, columnId)
   );
   const [isOpenNoteModal, setIsOpenNoteModal] = useState(false);
   const noteCount = noteOrder?.length || 0;

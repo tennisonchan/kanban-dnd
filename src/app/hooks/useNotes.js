@@ -5,17 +5,11 @@ import {
   removeNote,
   archiveNote,
 } from "app/slices/notes";
-import { getProjectById } from "app/hooks";
-
-export const getNotesSelector = (state, projectId) =>
-  getProjectById(state, projectId).notes;
-export const getNoteById = (state, projectId, noteId) =>
-  getNotesSelector(state, projectId)?.[noteId];
+import { selectNotes } from "app/selectors";
 
 export function useNotes(projectId, columnId) {
   const dispatch = useDispatch();
-  const notes =
-    useSelector((state) => getNotesSelector(state, projectId)) || {};
+  const notes = useSelector((state) => selectNotes(state, projectId)) || {};
 
   return [
     { notes },

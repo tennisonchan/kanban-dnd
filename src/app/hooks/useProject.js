@@ -1,29 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-  projectSliceName,
   projectActions,
   fetchProject,
   reorderNotes,
   reorderColumns,
 } from "app/slices/projects";
-
-const getProjectState = (state) => state[projectSliceName];
-export const getProjectsSelector = (state) => getProjectState(state).projects;
-export const getProjectById = (state, projectId) =>
-  getProjectsSelector(state)?.[projectId] || {};
-export const getColumnOrder = (state, projectId) =>
-  getProjectById(state, projectId)?.columnOrder;
-export const getNoteOrders = (state, projectId) =>
-  getProjectById(state, projectId)?.noteOrders;
-export const getNoteOrderByColumnId = (state, projectId, columnId) =>
-  getNoteOrders(state, projectId)?.[columnId];
+import { selectColumnOrder, selectNoteOrders } from "app/selectors";
 
 export function useProject(projectId) {
   const dispatch = useDispatch();
   const columnOrder =
-    useSelector((state) => getColumnOrder(state, projectId)) || [];
+    useSelector((state) => selectColumnOrder(state, projectId)) || [];
   const noteOrders =
-    useSelector((state) => getNoteOrders(state, projectId)) || {};
+    useSelector((state) => selectNoteOrders(state, projectId)) || {};
 
   return [
     { columnOrder, noteOrders },

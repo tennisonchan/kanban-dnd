@@ -1,16 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { createColumn, updateColumn, removeColumn } from "app/slices/columns";
-import { getProjectById } from "app/hooks";
-
-export const getColumns = (state, projectId) =>
-  getProjectById(state, projectId)?.columns;
-
-export const getColumnById = (state, projectId, columnId) =>
-  getColumns(state, projectId)?.[columnId];
+import { selectColumns } from "app/selectors";
 
 export function useColumns(projectId) {
   const dispatch = useDispatch();
-  const columns = useSelector((state) => getColumns(state, projectId)) || {};
+  const columns = useSelector((state) => selectColumns(state, projectId)) || {};
 
   return [
     { columns },
