@@ -18,6 +18,7 @@ const ColumnBoard = loadable(() => import("app/components/ColumnBoard"));
 const useStyles = makeStyles((theme) => ({
   columnsBoards: {
     display: "flex",
+    height: "fit-content",
   },
   columnsBoardsMediaQuery: {
     flexWrap: "wrap",
@@ -25,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
   columnsContainer: {
     display: "flex",
     padding: theme.spacing(2),
+    height: "calc(100vh - 64px)",
+    overflow: "auto",
   },
   columnContainerMediaQuery: {
     flexDirection: "column",
