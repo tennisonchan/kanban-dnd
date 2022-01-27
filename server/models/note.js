@@ -7,7 +7,7 @@ const NoteSchema = new mongoose.Schema(
     content: { type: String },
     status: { type: String, enum: ["open", "closed"], default: "open" },
     archived: { type: Boolean, default: false },
-    project: {
+    projectId: {
       type: Schema.Types.ObjectId,
       ref: "Project",
       required: true,

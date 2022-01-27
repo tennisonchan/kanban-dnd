@@ -28,7 +28,7 @@ export const removeColumn = createAsyncThunk(
 export const extraReducers = {
   [createColumn.fulfilled.type]: (state, action) => {
     const { column, columnOrder } = action.payload;
-    const projectId = column.project;
+    const { projectId } = column;
     const project = state.projects[projectId];
     return {
       ...state,
@@ -57,7 +57,7 @@ export const extraReducers = {
   },
   [removeColumn.fulfilled.type]: (state, action) => {
     const { column, columnOrder, noteOrders } = action.payload;
-    const projectId = column.project;
+    const { projectId } = column;
     const project = state.projects[projectId];
     const columns = { ...state.columns };
     delete columns[column.id];

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const project_controller = require("../controllers/projectController");
+const project_controller = require("../../controllers/projectController");
 
 router.get("/projects", project_controller.projects_read);
 router.get("/projects/:id", project_controller.project_read);

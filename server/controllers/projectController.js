@@ -24,10 +24,10 @@ exports.project_read = function (req, res, next) {
         Project.findById(projectId, "columnOrder noteOrders").exec(callback);
       },
       columns: function (callback) {
-        Column.find({ project: projectId }, "id name").exec(callback);
+        Column.find({ projectId }, "id name").exec(callback);
       },
       notes: function (callback) {
-        Note.find({ project: projectId }).exec(callback);
+        Note.find({ projectId }).exec(callback);
       },
     },
     function (err, results) {

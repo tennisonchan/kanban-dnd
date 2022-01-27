@@ -36,7 +36,7 @@ export const archiveNote = createAsyncThunk(
 export const extraReducers = {
   [createNote.fulfilled.type]: (state, action) => {
     const { note, noteOrders } = action.payload;
-    const projectId = note.project;
+    const { projectId } = note;
     const project = state.projects[projectId];
     return {
       ...state,
@@ -65,7 +65,7 @@ export const extraReducers = {
   },
   [removeNote.fulfilled.type]: (state, action) => {
     const { note, noteOrders } = action.payload;
-    const projectId = note.project;
+    const { projectId } = note;
     const project = state.projects[projectId];
     const notes = { ...state.notes };
     delete notes[note.id];
@@ -83,7 +83,7 @@ export const extraReducers = {
   },
   [archiveNote.fulfilled.type]: (state, action) => {
     const { note, noteOrders } = action.payload;
-    const projectId = note.project;
+    const { projectId } = note;
     const project = state.projects[projectId];
     return {
       ...state,

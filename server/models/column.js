@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const ColumnSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    project: {
+    projectId: {
       type: Schema.Types.ObjectId,
       ref: "Project",
       required: true,

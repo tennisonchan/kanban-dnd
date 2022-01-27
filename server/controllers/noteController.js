@@ -15,7 +15,7 @@ exports.note_create = function (req, res, next) {
   console.log("note_create", { projectId, columnId });
   const note = new Note({
     name,
-    project: projectId,
+    projectId,
     content,
     status,
     archived,
@@ -44,7 +44,7 @@ exports.note_update = function (req, res, next) {
     { _id: id },
     {
       name,
-      project: projectId,
+      projectId,
       content,
       status,
       archived,
@@ -63,8 +63,8 @@ exports.note_delete = function (req, res, next) {
   console.log("note_delete", { columnId, noteId });
 
   Note.findById(noteId).exec(function (err, note) {
-    if (err) return next(err);
-    const projectId = note.project;
+    if (err || !note) return next(err);
+    const { projectId } = note;
 
     Project.findById(projectId, "noteOrders").exec(function (err, project) {
       if (err || !project) return next(err);

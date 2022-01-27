@@ -1,11 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const columnsRouter = require("./columns");
-const notesRouter = require("./notes");
-const projectsRouter = require("./projects");
+const apiRouter = require("./api");
 
-router.use("/", projectsRouter);
-router.use("/", columnsRouter);
-router.use("/", notesRouter);
+router.use("/api", apiRouter);
 
 module.exports = router;

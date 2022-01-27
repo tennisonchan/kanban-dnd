@@ -12,7 +12,7 @@ exports.column_read = function (req, res, next) {
 exports.column_create = function (req, res, next) {
   const { name, projectId } = req.body;
   console.log("column_update", { projectId });
-  const column = new Column({ name, project: projectId });
+  const column = new Column({ name, projectId });
 
   column.save((err) => {
     if (err) {
@@ -35,7 +35,7 @@ exports.column_update = function (req, res, next) {
     { _id: id },
     {
       name,
-      project: projectId,
+      projectId,
     },
     { new: true },
     function (err, column) {
@@ -49,8 +49,8 @@ exports.column_delete = function (req, res, next) {
   const columnId = mongoose.Types.ObjectId(req.params.id);
   console.log("column_delete", { columnId });
   Column.findById(columnId).exec(function (err, column) {
-    if (err) return next(err);
-    const projectId = column.project;
+    if (err || !column) return next(err);
+    const { projectId } = column;
 
     Project.findById(projectId, "columnOrder noteOrders").exec(function (
       err,
