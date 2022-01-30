@@ -3,20 +3,24 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import "./i18n";
 import App from "app/App";
+import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import { getChainOptions, WalletProvider } from "@terra-money/wallet-provider";
+import { store } from "app/store";
 
 getChainOptions().then((chainOptions) => {
   ReactDOM.render(
-    <BrowserRouter>
-      <React.StrictMode>
-        <WalletProvider {...chainOptions}>
-          <App />
-        </WalletProvider>
-      </React.StrictMode>
-    </BrowserRouter>,
+    <Provider store={store}>
+      <BrowserRouter>
+        <React.StrictMode>
+          <WalletProvider {...chainOptions}>
+            <App />
+          </WalletProvider>
+        </React.StrictMode>
+      </BrowserRouter>
+    </Provider>,
     document.getElementById("root")
   );
 });

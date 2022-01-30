@@ -9,15 +9,14 @@ import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import MenuItem from "@mui/material/MenuItem";
 import { useConnect } from "app/hooks";
+import { useNavigate } from "react-router-dom";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 
 function NavBar() {
+  const navigate = useNavigate();
   const classes = useStyles();
   const anchorElUser = useRef(null);
-  const [
-    { isConnected, terraAddress },
-    { connectWalletExtension, disconnectWalletExtension },
-  ] = useConnect();
+  const [{ isConnected, terraAddress }, { disconnectWallet }] = useConnect();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const handleOpenUserMenu = () => {
     setIsOpenMenu(true);
@@ -26,10 +25,10 @@ function NavBar() {
     setIsOpenMenu(false);
   };
   const handleConnectWallet = () => {
-    connectWalletExtension();
+    navigate("/sign-in");
   };
   const handleDisconnectWallet = () => {
-    disconnectWalletExtension();
+    disconnectWallet();
     handleCloseUserMenu();
   };
 

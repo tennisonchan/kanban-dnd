@@ -11,6 +11,7 @@ import { reorderList, calculateOrder } from "app/helpers";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useSnackbar } from "notistack-v5";
 import { useTranslation } from "react-i18next";
+import NavBar from "app/components/NavBar";
 
 const ColumnModal = loadable(() => import("app/components/ColumnModal"));
 const ColumnBoard = loadable(() => import("app/components/ColumnBoard"));
@@ -129,66 +130,69 @@ function Board(props) {
   };
 
   return (
-    <div
-      className={clsx(
-        classes.columnsContainer,
-        isMediaQueryBreakPoint && classes.columnContainerMediaQuery
-      )}
-    >
-      {isNoColumns && <EmptyColumn onSubmit={handleCreateColumn} />}
-      {!isNoColumns && (
-        <>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable
-              droppableId="columns"
-              type="COLUMN"
-              direction={isMediaQueryBreakPoint ? "vertical" : "horizontal"}
-            >
-              {(provided) => (
-                <div
-                  ref={provided.innerRef}
-                  className={clsx(
-                    classes.columnsBoards,
-                    isMediaQueryBreakPoint && classes.columnsBoardsMediaQuery
-                  )}
-                >
-                  {columnOrder.map((columnId, index) => {
-                    return (
-                      <ColumnBoard
-                        key={columnId}
-                        projectId={projectId}
-                        columnId={columnId}
-                        index={index}
-                      />
-                    );
-                  })}
-                  {provided.placeholder}
-                </div>
+    <>
+      <NavBar />
+      <div
+        className={clsx(
+          classes.columnsContainer,
+          isMediaQueryBreakPoint && classes.columnContainerMediaQuery
+        )}
+      >
+        {isNoColumns && <EmptyColumn onSubmit={handleCreateColumn} />}
+        {!isNoColumns && (
+          <>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable
+                droppableId="columns"
+                type="COLUMN"
+                direction={isMediaQueryBreakPoint ? "vertical" : "horizontal"}
+              >
+                {(provided) => (
+                  <div
+                    ref={provided.innerRef}
+                    className={clsx(
+                      classes.columnsBoards,
+                      isMediaQueryBreakPoint && classes.columnsBoardsMediaQuery
+                    )}
+                  >
+                    {columnOrder.map((columnId, index) => {
+                      return (
+                        <ColumnBoard
+                          key={columnId}
+                          projectId={projectId}
+                          columnId={columnId}
+                          index={index}
+                        />
+                      );
+                    })}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+            <div
+              className={clsx(
+                classes.newColumnButtonWrap,
+                isMediaQueryBreakPoint && classes.newColumnButtonWrapMediaQuery
               )}
-            </Droppable>
-          </DragDropContext>
-          <div
-            className={clsx(
-              classes.newColumnButtonWrap,
-              isMediaQueryBreakPoint && classes.newColumnButtonWrapMediaQuery
-            )}
-          >
-            <Button onClick={handleOpen} className={classes.newColumnButton}>
-              <span className={classes.newColumnButtonText}>
-                {t("Board.Button.newColumnButtonText")}
-              </span>
-            </Button>
-            <ColumnModal
-              title={t("Board.ColumnModal.title")}
-              isOpen={isOpen}
-              onClose={handleClose}
-              onSubmit={handleCreateColumn}
-              buttonText={t("Board.ColumnModal.buttonText")}
-            />
-          </div>
-        </>
-      )}
-    </div>
+            >
+              <Button onClick={handleOpen} className={classes.newColumnButton}>
+                <span className={classes.newColumnButtonText}>
+                  {t("Board.Button.newColumnButtonText")}
+                </span>
+              </Button>
+              <ColumnModal
+                title={t("Board.ColumnModal.title")}
+                isOpen={isOpen}
+                onClose={handleClose}
+                onSubmit={handleCreateColumn}
+                buttonText={t("Board.ColumnModal.buttonText")}
+              />
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 }
 
