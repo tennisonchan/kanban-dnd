@@ -41,5 +41,15 @@
   "NoteModal.TextField.noteContent.placeholder": "Enter a note description",
   "NoteModal.TextField.label": "Delete note",
   "NotFound.Typography.h2": "404 - Not Found!",
-  "NotFound.Link.text": "Project page"
+  "NotFound.Link.text": "Project page",
+
+  "ProjectsPage.Snackbar.handleCreateProject.text": "You created a new project",
+  "ProjectsPage.ProjectModal.buttonText": "Create project",
+  "ProjectsPage.ProjectModal.title": "Add a project",
+  "ProjectsPage.Button.createProjectButtonText": "+ Add project",
+
+  "ProjectModal.title": "Add a project",
+  "ProjectModal.buttonText": "Create project",
+  "ProjectModal.TextField.label": "Project name",
+  "ProjectModal.TextField.placeholder": "Enter a project name"
 }

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   getProjects,
   getProject,
+  postProject,
   postNotesReorder,
   postColumnsReorder,
 } from "app/apis";
@@ -36,6 +37,14 @@ export const fetchProject = createAsyncThunk(
   "project/fetchProject",
   async (projectId) => {
     const resp = await getProject(projectId);
+    return resp.data;
+  }
+);
+
+export const createProject = createAsyncThunk(
+  "project/createProject",
+  async (payload) => {
+    const resp = await postProject(payload);
     return resp.data;
   }
 );
@@ -119,6 +128,17 @@ export const projectSlice = createSlice({
             noteOrders,
             columnOrder,
           },
+        },
+      };
+    },
+    [createProject.fulfilled.type]: (state, action) => {
+      const { project, projectList } = action.payload;
+      return {
+        ...state,
+        projectList,
+        projects: {
+          ...state.projects,
+          project,
         },
       };
     },
