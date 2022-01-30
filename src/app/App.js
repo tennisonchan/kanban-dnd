@@ -10,29 +10,40 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { SnackbarProvider } from "notistack-v5";
 import { useConnect, useAuth } from "app/hooks";
+import { getCSRF } from "app/apis";
 
 function App() {
   const navigate = useNavigate();
   const [{ isInitializing, terraAddress }] = useConnect();
   const [isLoading, setIsLoading] = useState(isInitializing);
   const [{ isAuthenticated }, { authUser }] = useAuth();
+  const [isDataReady, setIsDataReady] = useState(false);
 
   useEffect(() => {
-    if (!isInitializing && !terraAddress) {
+    async function fetchCSRF() {
+      await getCSRF();
+      setIsDataReady(true);
+    }
+
+    fetchCSRF();
+  }, []);
+
+  useEffect(() => {
+    if (isDataReady && !isInitializing && !terraAddress) {
       setIsLoading(false);
       navigate("/sign-in");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [terraAddress, isInitializing]);
+  }, [isDataReady, terraAddress, isInitializing]);
 
   useEffect(() => {
-    if (!isAuthenticated && terraAddress) {
+    if (isDataReady && !isAuthenticated && terraAddress) {
       authUser(terraAddress).then(() => {
         setIsLoading(false);
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [terraAddress, isAuthenticated]);
+  }, [isDataReady, terraAddress, isAuthenticated]);
 
   return (
     <ThemeProvider theme={theme}>

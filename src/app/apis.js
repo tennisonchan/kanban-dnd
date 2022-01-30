@@ -43,3 +43,8 @@ export const postNotesReorder = (payload) =>
   axios.post(`${API_URL}/notes/reorder`, payload);
 
 export const postJWT = (payload) => axios.post(`${API_URL}/jwt`, payload);
+
+export const getCSRF = async () => {
+  const { data } = await axios.get(`${BASE_URL}/csrf`);
+  axios.defaults.headers.post["x-csrf-token"] = data.csrfToken;
+};
