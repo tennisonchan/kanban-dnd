@@ -7,6 +7,10 @@ import {
 } from "app/apis";
 import { extraReducers as columnExtraReducers } from "app/slices/columns";
 import { extraReducers as noteExtraReducers } from "app/slices/notes";
+import {
+  reducers as userReducers,
+  extraReducers as userExtraReducers,
+} from "app/slices/user";
 
 export const projectState = {
   projectList: [],
@@ -56,6 +60,7 @@ export const projectSlice = createSlice({
   name: "project",
   initialState: projectState,
   reducers: {
+    ...userReducers,
     reorderNotes(state, action) {
       const { noteOrders, projectId } = action.payload;
       const project = state.projects[projectId];
@@ -88,6 +93,7 @@ export const projectSlice = createSlice({
   extraReducers: {
     ...columnExtraReducers,
     ...noteExtraReducers,
+    ...userExtraReducers,
     [fetchProjects.fulfilled.type]: (state, action) => {
       const { projectList } = action.payload;
       return {
@@ -99,8 +105,14 @@ export const projectSlice = createSlice({
       const { id, notes, noteOrders, columns, columnOrder } = action.payload;
       return {
         ...state,
-        columns,
-        notes,
+        columns: {
+          ...state.columns,
+          ...columns,
+        },
+        notes: {
+          ...state.notes,
+          ...notes,
+        },
         projects: {
           ...state.projects,
           [id]: {

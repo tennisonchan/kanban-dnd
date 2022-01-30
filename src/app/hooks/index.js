@@ -3,3 +3,4 @@ export * from "./useNotes";
 export * from "./useProject";
 export * from "./useProjects";
 export * from "./useConnect";
+export * from "./useAuth";

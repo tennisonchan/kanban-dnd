@@ -31,3 +31,6 @@ export const selectColumns = (state, projectId) =>
 
 export const selectColumnById = (state, projectId, columnId) =>
   selectColumns(state, projectId)?.[columnId];
+
+export const selectAccessToken = (state) =>
+  selectProjectSliceState(state).accessToken;
