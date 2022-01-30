@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new mongoose.Schema(
   {
-    terraAddress: { type: String, required: true },
+    terraAddress: { type: String, required: true, index: true },
   },
   {
     toObject: { virtuals: true },
