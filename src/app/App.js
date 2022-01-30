@@ -4,36 +4,22 @@ import Board from "app/components/Board";
 import ProjectsPage from "app/components/ProjectsPage";
 import NotFound from "app/components/NotFound";
 import SignInPage from "app/components/SignInPage";
+import Loading from "app/components/Loading";
 import { useNavigate, Route, Routes, Navigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { SnackbarProvider } from "notistack-v5";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
 import { useConnect, useAuth } from "app/hooks";
-
-const Loading = () => (
-  <Box
-    sx={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "100%",
-    }}
-  >
-    <CircularProgress />
-  </Box>
-);
 
 function App() {
   const navigate = useNavigate();
   const [{ isInitializing, terraAddress }] = useConnect();
-  const [loading, setLoading] = useState(isInitializing);
+  const [isLoading, setIsLoading] = useState(isInitializing);
   const [{ isAuthenticated }, { authUser }] = useAuth();
 
   useEffect(() => {
     if (!isInitializing && !terraAddress) {
-      setLoading(false);
+      setIsLoading(false);
       navigate("/sign-in");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,7 +28,7 @@ function App() {
   useEffect(() => {
     if (!isAuthenticated && terraAddress) {
       authUser(terraAddress).then(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,7 +44,7 @@ function App() {
         }}
       >
         <Suspense fallback={<Loading />}>
-          {loading ? (
+          {isLoading ? (
             <Loading />
           ) : (
             <Routes>

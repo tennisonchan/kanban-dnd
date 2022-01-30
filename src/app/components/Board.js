@@ -12,6 +12,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useSnackbar } from "notistack-v5";
 import { useTranslation } from "react-i18next";
 import NavBar from "app/components/NavBar";
+import Loading from "app/components/Loading";
 
 const ColumnModal = loadable(() => import("app/components/ColumnModal"));
 const ColumnBoard = loadable(() => import("app/components/ColumnBoard"));
@@ -72,6 +73,7 @@ function Board(props) {
   const isNoColumns = !columnOrder.length;
   const [isOpen, setIsOpen] = useState(false);
   const isMediaQueryBreakPoint = useMediaQuery("(max-width:640px)");
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -94,6 +96,7 @@ function Board(props) {
 
   useEffect(() => {
     fetchProject(projectId).then(({ error }) => {
+      setIsLoading(false);
       if (error) {
         navigate("/oops");
         enqueueSnackbar(error.message, {
@@ -128,6 +131,10 @@ function Board(props) {
     const newNoteOrders = calculateOrder(noteOrders, source, destination);
     reorderNotes(newNoteOrders);
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
