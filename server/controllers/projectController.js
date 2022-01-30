@@ -5,8 +5,8 @@ const Column = require("../models/column");
 const Note = require("../models/note");
 
 exports.projects_read = function (req, res, next) {
-  console.log("projects_read");
-  Project.find({}, "id name").exec(function (err, projects) {
+  const { id: ownerId } = req.user;
+  Project.find({ ownerId }, "id name").exec(function (err, projects) {
     if (err) {
       return next(err);
     }
@@ -51,14 +51,13 @@ exports.project_read = function (req, res, next) {
 
 exports.project_create = function (req, res, next) {
   console.log("project_create");
+  const { id: ownerId } = req.user;
   const project = new Project({
     name: req.body.name,
+    ownerId,
   });
   project.save((err) => {
-    console.log("2", err);
-    if (err) {
-      return next(err);
-    }
+    if (err) return next(err);
     res.json({ project });
   });
 };
