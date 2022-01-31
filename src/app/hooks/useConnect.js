@@ -41,7 +41,6 @@ export function useConnect() {
     setIsConnected(status === WalletStatus.WALLET_CONNECTED);
     setIsInitializing(status === WalletStatus.INITIALIZING);
   }, [status]);
-  console.log({ connectedWallet });
 
   const disconnectWallet = () => {
     setAccessToken("");

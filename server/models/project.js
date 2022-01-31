@@ -11,6 +11,7 @@ const ProjectSchema = new mongoose.Schema(
   {
     toObject: { virtuals: true },
     toJSON: { virtuals: true },
+    minimize: false,
   }
 );
 

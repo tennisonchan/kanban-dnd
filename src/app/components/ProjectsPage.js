@@ -4,15 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack-v5";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { CardActionArea } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import NavBar from "app/components/NavBar";
 import ProjectModal from "app/components/ProjectModal";
+import ProjectCard from "app/components/ProjectCard";
 import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,12 +23,11 @@ const ProjectPage = (props) => {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
-  const [{ accessToken, isAuthenticated }] = useAuth();
+  const [{ isAuthenticated }] = useAuth();
   const [{ projectList }, { fetchProjects, createProject }] = useProjects();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   useEffect(() => {
-    console.log("ProjectPage", { accessToken, isAuthenticated });
     if (!isAuthenticated) {
       navigate("/sign-in");
     }
@@ -44,17 +39,12 @@ const ProjectPage = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log({ projectList });
-  const handleClickOnPage = (projectId) => {
-    navigate(`/projects/${projectId}`);
+  const handleOpenModal = () => {
+    setIsOpenModal(true);
   };
 
-  const handleOpen = () => {
-    setIsOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
+  const handleCloseModal = () => {
+    setIsOpenModal(false);
   };
 
   const handleCreateProject = (project) => {
@@ -65,7 +55,7 @@ const ProjectPage = (props) => {
       });
     });
 
-    handleClose();
+    handleCloseModal();
   };
 
   return (
@@ -75,29 +65,12 @@ const ProjectPage = (props) => {
         <Grid container spacing={2}>
           {projectList.map((project) => (
             <Grid item key={project.id}>
-              <Card sx={{ maxWidth: 345 }}>
-                <CardActionArea onClick={() => handleClickOnPage(project.id)}>
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    image={`https://picsum.photos/345/200?grayscale&blur=2&random=${project.id}`}
-                    alt="project cover"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {project.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {project.description}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+              <ProjectCard projectId={project.id} project={project} />
             </Grid>
           ))}
           <Grid item>
             <Button
-              onClick={handleOpen}
+              onClick={handleOpenModal}
               className={classes.createProjectButton}
             >
               <span className={classes.createProjectButtonText}>
@@ -106,8 +79,8 @@ const ProjectPage = (props) => {
             </Button>
             <ProjectModal
               title={t("ProjectsPage.ProjectModal.title")}
-              isOpen={isOpen}
-              onClose={handleClose}
+              isOpen={isOpenModal}
+              onClose={handleCloseModal}
               onSubmit={handleCreateProject}
               buttonText={t("ProjectsPage.ProjectModal.buttonText")}
             />

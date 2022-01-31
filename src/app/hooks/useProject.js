@@ -4,6 +4,8 @@ import {
   fetchProject,
   reorderNotes,
   reorderColumns,
+  removeProject,
+  updateProject,
 } from "app/slices/projects";
 import { selectColumnOrder, selectNoteOrders } from "app/selectors";
 
@@ -27,6 +29,12 @@ export function useProject(projectId) {
       },
       fetchProject: function (projectId) {
         return dispatch(fetchProject(projectId));
+      },
+      editProject: function (project) {
+        return dispatch(updateProject(project));
+      },
+      removeProject: function (id) {
+        return dispatch(removeProject(id));
       },
     },
   ];

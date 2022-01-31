@@ -3,7 +3,7 @@ const router = express.Router();
 const apiRouter = require("./api");
 const csrf = require("csurf");
 
-const csrfProtection = csrf({ cookie: true });
+const csrfProtection = csrf({ cookie: true, httpOnly: true });
 
 router.use(csrfProtection);
 

@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
-  getProjects,
+  deleteProject,
   getProject,
-  postProject,
-  postNotesReorder,
+  getProjects,
+  patchProject,
   postColumnsReorder,
+  postNotesReorder,
+  postProject,
 } from "app/apis";
 import { extraReducers as columnExtraReducers } from "app/slices/columns";
 import { extraReducers as noteExtraReducers } from "app/slices/notes";
@@ -45,6 +47,22 @@ export const createProject = createAsyncThunk(
   "project/createProject",
   async (payload) => {
     const resp = await postProject(payload);
+    return resp.data;
+  }
+);
+
+export const updateProject = createAsyncThunk(
+  "project/updateProject",
+  async (payload) => {
+    const resp = await patchProject(payload);
+    return resp.data;
+  }
+);
+
+export const removeProject = createAsyncThunk(
+  "project/removeProject",
+  async (payload) => {
+    const resp = await deleteProject(payload);
     return resp.data;
   }
 );
@@ -140,6 +158,28 @@ export const projectSlice = createSlice({
           ...state.projects,
           project,
         },
+      };
+    },
+    [updateProject.fulfilled.type]: (state, action) => {
+      const { project, projectList } = action.payload;
+      return {
+        ...state,
+        projectList,
+        projects: {
+          ...state.projects,
+          [project.id]: project,
+        },
+      };
+    },
+    [removeProject.fulfilled.type]: (state, action) => {
+      const { project, projectList } = action.payload;
+      const projects = { ...state.projects };
+      delete projects[project.id];
+
+      return {
+        ...state,
+        projectList,
+        projects,
       };
     },
     [reorderNotes.fulfilled.type]: (state, action) => {

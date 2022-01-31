@@ -11,8 +11,6 @@ export const useAuth = () => {
   const { terraAddress = null } = connectedWallet || {};
   const isAuthenticated = !!accessToken;
 
-  console.log({ terraAddress, isAuthenticated, accessToken });
-
   return [
     {
       accessToken,

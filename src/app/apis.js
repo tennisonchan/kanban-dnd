@@ -15,8 +15,8 @@ export const postProject = (payload) =>
 export const patchProject = (payload) =>
   axios.patch(`${API_URL}/project/`, payload);
 
-export const deleteProject = (payload) =>
-  axios.delete(`${API_URL}/project/`, payload);
+export const deleteProject = (projectId) =>
+  axios.delete(`${API_URL}/project/${projectId}`);
 
 export const postColumn = (payload) => axios.post(`${API_URL}/column`, payload);
 
@@ -46,5 +46,5 @@ export const postJWT = (payload) => axios.post(`${API_URL}/jwt`, payload);
 
 export const getCSRF = async () => {
   const { data } = await axios.get(`${BASE_URL}/csrf`);
-  axios.defaults.headers.post["x-csrf-token"] = data.csrfToken;
+  axios.defaults.headers.common["x-csrf-token"] = data.csrfToken;
 };

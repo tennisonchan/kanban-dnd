@@ -7,11 +7,11 @@ const Note = require("../models/note");
 exports.get_projects = function (req, res, next) {
   const { id: ownerId } = req.user;
   console.log("get_projects", ownerId);
-  Project.find({ ownerId }, "id name").exec(function (err, projects) {
+  Project.find({ ownerId }, "id name").exec(function (err, projectList) {
     if (err) {
       return next(err);
     }
-    res.json({ projectList: projects });
+    res.json({ projectList });
   });
 };
 
@@ -60,15 +60,16 @@ exports.post_project = function (req, res, next) {
   project.save((err) => {
     if (err) return next(err);
 
-    Project.find({ ownerId }, "id name").exec(function (err, projects) {
+    Project.find({ ownerId }, "id name").exec(function (err, projectList) {
       if (err) return next(err);
-      res.json({ project, projectList: projects });
+      res.json({ project, projectList });
     });
   });
 };
 
 exports.patch_project = function (req, res, next) {
   const { id: projectId, name, columnOrder, noteOrders } = req.body;
+  const { id: ownerId } = req.user;
 
   console.log("patch_project", { projectId });
   Project.findOneAndUpdate(
@@ -80,21 +81,27 @@ exports.patch_project = function (req, res, next) {
     },
     { new: true },
     (err, project) => {
-      if (err) {
-        return next(err);
-      }
-      res.json({ project });
+      if (err) return next(err);
+
+      Project.find({ ownerId }, "id name").exec(function (err, projectList) {
+        if (err) return next(err);
+        res.json({ project, projectList });
+      });
     }
   );
 };
 
 exports.delete_project_id = function (req, res, next) {
   const projectId = mongoose.Types.ObjectId(req.params.id);
+  const { id: ownerId } = req.user;
   console.log("delete_project_id", { projectId });
   Project.findOneAndDelete(projectId, (err, project) => {
     if (err) {
       return next(err);
     }
-    res.json({ project });
+    Project.find({ ownerId }, "id name").exec(function (err, projectList) {
+      if (err) return next(err);
+      res.json({ project, projectList });
+    });
   });
 };

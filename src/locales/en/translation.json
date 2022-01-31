@@ -23,7 +23,7 @@
   "ColumnCard.NoteModal.title": "Edit {{noteName}}",
   "ColumnBoard.Snackbar.handleCreateNote.text": "You added a new note!",
   "ColumnBoard.Snackbar.handleDeleteColumn.text": "You added a new note!",
-  "ColumnBoard.Snackbar.handleEditColumn.text": "Columns is updated!",
+  "ColumnBoard.Snackbar.handleEditColumn.text": "Column is updated!",
   "ColumnBoard.ColumnModal.buttonText": "Update column",
   "ColumnBoard.ColumnModal.title": "Edit column",
   "ColumnBoard.NoteModal.buttonText": "Add note",
@@ -47,6 +47,16 @@
   "ProjectsPage.ProjectModal.buttonText": "Create project",
   "ProjectsPage.ProjectModal.title": "Add a project",
   "ProjectsPage.Button.createProjectButtonText": "+ Add project",
+  "ProjectsPage.Snackbar.handleDeleteProject.text": "You added a new note!",
+  "ProjectsPage.Snackbar.handleEditProject.text": "Project is updated!",
+
+  "ProjectMenu.ListItemText.editProject.text": "Edit project",
+  "ProjectMenu.ListItemText.deleteProject.text": "Delete project",
+
+  "ProjectCard.ProjectModal.buttonText": "Edit project",
+  "ProjectCard.ProjectModal.title": "Edit project",
+  "ProjectCard.Snackbar.handleEditProject.text": "You edited a project",
+  "ProjectCard.Snackbar.handleDeleteProject.text": "You removed a project",
 
   "ProjectModal.title": "Add a project",
   "ProjectModal.buttonText": "Create project",
