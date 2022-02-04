@@ -1,8 +1,11 @@
 {
-  "name": "terra-kanban",
+  "name": "kanban-dnd",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:3001",
+  "engines": {
+    "node": ">= 16.13.0"
+  },
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@loadable/component": "^5.15.2",
@@ -54,7 +57,7 @@
     "workbox-streams": "^5.1.4"
   },
   "scripts": {
-    "server:start": "node ./server/bin/www",
+    "server:start": "PORT=3000 node ./server/bin/www",
     "server:dev": "nodemon ./server/bin/www",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",

@@ -1,8 +1,6 @@
 import axios from "axios";
 
-const PORT = 3000;
-const BASE_URL = `http://localhost:${PORT}`;
-const API_URL = `${BASE_URL}/api`;
+const API_URL = "/api";
 
 export const getProjects = () => axios.get(`${API_URL}/projects`);
 
@@ -45,6 +43,6 @@ export const postNotesReorder = (payload) =>
 export const postJWT = (payload) => axios.post(`${API_URL}/jwt`, payload);
 
 export const getCSRF = async () => {
-  const { data } = await axios.get(`${BASE_URL}/csrf`);
+  const { data } = await axios.get("/csrf");
   axios.defaults.headers.common["x-csrf-token"] = data.csrfToken;
 };
