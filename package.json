@@ -57,10 +57,10 @@
     "workbox-streams": "^5.1.4"
   },
   "scripts": {
-    "server:start": "PORT=3000 node ./server/bin/www",
+    "server:start": "PORT=3000 node --max-old-space-size=4096 ./server/bin/www",
     "server:dev": "nodemon ./server/bin/www",
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "react-app-rewired --max-old-space-size=4096 build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject"
   },
